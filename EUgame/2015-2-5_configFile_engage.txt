@@ -1,0 +1,41 @@
+Serious-game
+   SGname : "EU mouse"
+   SGdeveloper : 1
+   SGdesc : "This is a mini serious game that teaches you to identify countries part of the European Union"
+   SGageRange : 10-99
+   SGlanguage : EN
+   SGcountry : UK 
+   SGgenre : "runner"
+   SGsubject : "geography"
+   SGpublic : true
+End
+
+Player
+  age : Int
+  grade : String
+  gender : Char
+End
+
+Learning-outcomes
+  eu_score "overall score, number of correct countries identified" 0
+  eu_countries "distinct countries of the EU left to find" 28
+  lives "number of lives the player has" 3
+End
+
+Feedback-messages
+  correct_country "Well done, [country] is indeed part of the EU" positive
+  wrong_country "Nope, [country] is not part of the EU" negative
+  
+  gold_medal "You found all the EU countries without any mistake" badge
+  silver_medal "You found all the EU countries losing just one life" badge
+  bonze_medal "You found all the EU countries losing two lives" badge
+End
+
+Evidence-model
+  newCountrySelected( String country )
+    
+End
+
+Feedback-model
+  /* inactivity or outcome feedback */
+End
