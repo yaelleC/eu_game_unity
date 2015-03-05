@@ -11,6 +11,8 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public UIManagerScript uiScript;
 	public Sprite activeImage;
 
+	public EngAGe engage;
+
 	private int wait = 0;
 
 	// Use this for initialization
@@ -24,7 +26,6 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		if (wait > 50)
 		{
 			JSONArray badges = uiScript.getBadges ();
-			print (badges.ToString());
 			string badgeName = this.name.Replace ("img_badge_", "");
 				
 			foreach (JSONNode b in badges)
@@ -44,7 +45,7 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	{
 		print ("mouse over");
 
-		JSONNode sg = uiScript.getSeriousgame ();
+		JSONNode sg = engage.getSG ();
 		string badgeName = this.name.Replace ("img_badge_", "");
 		string desc = "description not available";
 		if ((sg ["feedback"] != null) && (sg ["feedback"][badgeName] != null))
@@ -52,16 +53,16 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
 		showToolTip (data.position, desc);
 
-		JSONArray badges = uiScript.getBadges ();
+		JSONArray badges = engage.getBadges();
 		print (badges.ToString());
 				
-		foreach (JSONNode b in badges)
+		/*foreach (JSONNode b in badges)
 		{
 			if (string.Equals(b["name"], badgeName))
 			{
-			//	this.GetComponent<SpriteRenderer> ().sprite = activeImage;
+				this.GetComponent<SpriteRenderer> ().sprite = activeImage;
 			}
-		}
+		}*/
 	}
 
 	public void OnPointerExit(PointerEventData data)

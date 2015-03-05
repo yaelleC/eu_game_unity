@@ -7,6 +7,8 @@ using System.Text;
 using SimpleJSON;
 
 public class EngAGe : MonoBehaviour {
+
+	public UIManagerScript uiScript;
 		
 	private static int idStudent;
 	private static int idPlayer = -1;
@@ -15,6 +17,8 @@ public class EngAGe : MonoBehaviour {
 	private static JSONArray parameters;
 	private static JSONArray scores = new JSONArray ();
 	private static JSONArray feedback = new JSONArray ();
+	private static JSONArray badgesWon = new JSONArray();
+
 	private static JSONNode seriousGame = new JSONNode();
 	
 	private static string error;
@@ -67,6 +71,10 @@ public class EngAGe : MonoBehaviour {
 	public JSONArray getFeedback()
 	{
 		return feedback;
+	}
+	public JSONArray getBadges()
+	{
+		return badgesWon;
 	}
 	public JSONNode getSG()
 	{
@@ -169,7 +177,7 @@ public class EngAGe : MonoBehaviour {
 			{
 				idPlayer = loginData["idPlayer"].AsInt;
 				version = loginData["version"].AsInt;
-				idStudent = loginData["student"]["idStudent"].AsInt;
+				idStudent = loginData["student"]["id"].AsInt;
 				parameters = loginData["params"].AsArray;
 				
 				Application.LoadLevel(sceneNoParameters);
@@ -177,7 +185,7 @@ public class EngAGe : MonoBehaviour {
 			else
 			{
 				version = loginData["version"].AsInt;
-				idStudent = loginData["student"]["idStudent"].AsInt;
+				idStudent = loginData["student"]["id"].AsInt;
 				parameters = loginData["params"].AsArray;
 				
 				Application.LoadLevel(sceneParameters);
@@ -241,8 +249,8 @@ public class EngAGe : MonoBehaviour {
 		stream.Close();
 	}
 	
-	/*
-	public IEnumerator startGameplay()
+
+	public IEnumerator startGameplay(int p_idSG, string sceneGame)
 	{
 		scores = new JSONArray ();
 		feedback = new JSONArray ();
@@ -260,7 +268,7 @@ public class EngAGe : MonoBehaviour {
 		{		
 			putDataString = 
 				"{" + 
-					"\"idSG\": " + idSG + 
+					"\"idSG\": " + p_idSG + 
 					", \"version\": " + version + 
 					", \"idPlayer\": " + idPlayer +
 					"}";
@@ -270,12 +278,13 @@ public class EngAGe : MonoBehaviour {
 		{
 			putDataString = 
 				"{" + 
-					"\"idSG\": " + idSG + 
+					"\"idSG\": " + p_idSG + 
 					", \"version\": " + version + 
-					", \"idStudent\": " + idPlayer +
+					", \"idStudent\": " + idStudent +
 					", \"params\": " + parameters.ToString() +
 					"}";
 		}
+		print (putDataString);
 		
 		UTF8Encoding encoder = new UTF8Encoding();
 		byte[] putData = encoder.GetBytes(putDataString);
@@ -321,25 +330,25 @@ public class EngAGe : MonoBehaviour {
 		print ("Scores received! " + scores.ToString());
 		stream2.Close();
 		
-		Application.LoadLevel("StartScene");
+		Application.LoadLevel(sceneGame);
 	}
-	
-	public IEnumerator assessAndScore(String action, JSONNode values)
+
+	public IEnumerator assess(string p_action, JSONNode p_values)
 	{
-		print ("--- assess ---");
+		print ("--- assess action (" + p_action + ") ---");
 		
 		WebAsync webAsync = new WebAsync();
 		
 		string putDataString = 
 			"{" + 
-				"\"action\": \"" + action + "\"" +
-				", \"values\": " + values.ToString() + 
+				"\"action\": \"" + p_action + "\"" +
+				", \"values\": " + p_values.ToString() + 
 				"}";
 		
 		UTF8Encoding encoder = new UTF8Encoding();
 		byte[] putData = encoder.GetBytes(putDataString);
 		
-		string URL = baseURL + "/gameplay/" + idGameplay + "/assess";
+		string URL = baseURL + "/gameplay/" + idGameplay + "/assessAndScore";
 		
 		WebRequest wr = getPUTrequest (URL, putData.Length);
 		
@@ -355,245 +364,23 @@ public class EngAGe : MonoBehaviour {
 		
 		Stream stream = webAsync.requestState.webResponse.GetResponseStream();
 		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
-		feedback = JSON.Parse(tmpMessage).AsArray;
-		print ("Action " + putDataString + " assessed! returned: " + feedback.ToString());
-		foreach (JSONNode f in feedback)
-		{
-			// create a new text in panel messages
-			Text txtFeedback = (Text)Instantiate(textFeedback);
-			txtFeedback.name = "txt_" + f["name"];
-			txtFeedback.transform.SetParent(pnl_messages.transform);
-			txtFeedback.text = f["message"];
-			if (string.Equals( f["type"], "POSITIVE"))
-				txtFeedback.color = new Color(0, 1, 0);
-			if (string.Equals( f["type"], "NEGATIVE"))
-				txtFeedback.color = new Color(1, 0, 0);
-			
-			RectTransform transform = txtFeedback.transform as RectTransform;   
-			transform.anchoredPosition = new Vector2(5, - 10 - feedbackMessages.Count * 30 );
-			
-			feedbackMessages.Add(txtFeedback);
-			
-			// log badge
-			if (string.Equals(f["type"], "BADGE"))
-			{
-				badgesWon.Add(f);
-			}
-			
-		}
+		JSONNode returnAssess = JSON.Parse (tmpMessage);
+		
+		feedback = returnAssess["feedback"].AsArray;
+		scores = returnAssess["scores"].AsArray;
+		print ("Action " + putDataString + " assessed! returned: " + returnAssess.ToString());
+
 		stream.Close();
-		
-		print ("--- getScores ---");
-		
-		string URL2 = baseURL + "/gameplay/" + idGameplay + "/scores/";
-		
-		WebRequest wr2 = getGETrequest (URL2);	
-		
-		WebAsync webAsync2 = new WebAsync();
-		
-		StartCoroutine(webAsync2.GetResponse(wr2));
-		
-		while(! webAsync2.isResponseCompleted)
-		{
-			yield return null;
-		}
-		
-		Stream stream2 = webAsync2.requestState.webResponse.GetResponseStream();
-		string tmpMessage2= new StreamReader(stream2).ReadToEnd().ToString();
-		scores = JSON.Parse(tmpMessage2).AsArray;
-		print ("Scores received! " + scores.ToString());
-		
-		mouseC.UpdateScores();
-		stream2.Close();
-		
-		print ("--- getFeedback ---");
-		
-		string URL3 = baseURL + "/gameplay/" + idGameplay + "/feedback/";
-		
-		WebRequest wr3 = getGETrequest (URL3);	
-		
-		WebAsync webAsync3 = new WebAsync();
-		
-		StartCoroutine(webAsync3.GetResponse(wr3));
-		
-		while(! webAsync3.isResponseCompleted)
-		{
-			yield return null;
-		}
-		
-		Stream stream3 = webAsync3.requestState.webResponse.GetResponseStream();
-		string tmpMessage3 = new StreamReader(stream3).ReadToEnd().ToString();
-		feedback = JSON.Parse(tmpMessage3).AsArray;
-		print ("Feedback received! " + feedback.ToString());
-		
-		foreach (JSONNode f in feedback)
-		{
-			// create a new text in panel messages
-			Text txtFeedback = (Text)Instantiate(textFeedback);
-			txtFeedback.name = "txt_" + f["name"];
-			txtFeedback.transform.SetParent(pnl_messages.transform);
-			txtFeedback.text = f["message"];
-			if (string.Equals( f["type"], "POSITIVE"))
-				txtFeedback.color = new Color(0, 1, 0);
-			if (string.Equals( f["type"], "NEGATIVE"))
-				txtFeedback.color = new Color(1, 0, 0);
-			
-			RectTransform transform = txtFeedback.transform as RectTransform;   
-			transform.anchoredPosition = new Vector2(0, feedbackMessages.Count * 50 );
-			
-			feedbackMessages.Add(txtFeedback);
-			
-			// log badge
-			if (string.Equals(f["type"], "BADGE"))
-			{
-				badgesWon.Add(f);
-			}
-		}
-		
-		endGame ();
-		stream3.Close();
-		
-		mouseC.UpdateFeedback ();
+				
+		uiScript.RecieveFeedback ();
 	}
 	
-	public IEnumerator assess(String action, JSONNode values)
-	{
-		print ("--- assess ---");
-		
-		WebAsync webAsync = new WebAsync();
-		
-		string putDataString = 
-			"{" + 
-				"\"action\": \"" + action + "\"" +
-				", \"values\": " + values.ToString() + 
-				"}";
-		
-		UTF8Encoding encoder = new UTF8Encoding();
-		byte[] putData = encoder.GetBytes(putDataString);
-		
-		string URL = baseURL + "/gameplay/" + idGameplay + "/assess";
-		
-		WebRequest wr = getPUTrequest (URL, putData.Length);
-		
-		Stream dataStream = wr.GetRequestStream();
-		dataStream.Write(putData, 0, putData.Length);
-		dataStream.Close();
-		
-		StartCoroutine(webAsync.GetResponse(wr));
-		while(! webAsync.isResponseCompleted)
-		{
-			yield return null;
-		}
-		
-		Stream stream = webAsync.requestState.webResponse.GetResponseStream();
-		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
-		feedback = JSON.Parse(tmpMessage).AsArray;
-		print ("Action " + putDataString + " assessed! returned: " + feedback.ToString());
-		foreach (JSONNode f in feedback)
-		{
-			// create a new text in panel messages
-			Text txtFeedback = (Text)Instantiate(textFeedback);
-			txtFeedback.name = "txt_" + f["name"];
-			txtFeedback.transform.SetParent(pnl_messages.transform);
-			txtFeedback.text = f["message"];
-			if (string.Equals( f["type"], "POSITIVE"))
-				txtFeedback.color = new Color(0, 1, 0);
-			if (string.Equals( f["type"], "NEGATIVE"))
-				txtFeedback.color = new Color(1, 0, 0);
-			
-			RectTransform transform = txtFeedback.transform as RectTransform;   
-			transform.anchoredPosition = new Vector2(5, - 10 - feedbackMessages.Count * 30 );
-			
-			feedbackMessages.Add(txtFeedback);
-			
-			// log badge
-			if (string.Equals(f["type"], "BADGE"))
-			{
-				badgesWon.Add(f);
-			}
-			
-		}
-		stream.Close();
-		
-		print ("--- getScores ---");
-		
-		string URL2 = baseURL + "/gameplay/" + idGameplay + "/scores/";
-		
-		WebRequest wr2 = getGETrequest (URL2);	
-		
-		WebAsync webAsync2 = new WebAsync();
-		
-		StartCoroutine(webAsync2.GetResponse(wr2));
-		
-		while(! webAsync2.isResponseCompleted)
-		{
-			yield return null;
-		}
-		
-		Stream stream2 = webAsync2.requestState.webResponse.GetResponseStream();
-		string tmpMessage2= new StreamReader(stream2).ReadToEnd().ToString();
-		scores = JSON.Parse(tmpMessage2).AsArray;
-		print ("Scores received! " + scores.ToString());
-		
-		mouseC.UpdateScores();
-		stream2.Close();
-		
-		print ("--- getFeedback ---");
-		
-		string URL3 = baseURL + "/gameplay/" + idGameplay + "/feedback/";
-		
-		WebRequest wr3 = getGETrequest (URL3);	
-		
-		WebAsync webAsync3 = new WebAsync();
-		
-		StartCoroutine(webAsync3.GetResponse(wr3));
-		
-		while(! webAsync3.isResponseCompleted)
-		{
-			yield return null;
-		}
-		
-		Stream stream3 = webAsync3.requestState.webResponse.GetResponseStream();
-		string tmpMessage3 = new StreamReader(stream3).ReadToEnd().ToString();
-		feedback = JSON.Parse(tmpMessage3).AsArray;
-		print ("Feedback received! " + feedback.ToString());
-		
-		foreach (JSONNode f in feedback)
-		{
-			// create a new text in panel messages
-			Text txtFeedback = (Text)Instantiate(textFeedback);
-			txtFeedback.name = "txt_" + f["name"];
-			txtFeedback.transform.SetParent(pnl_messages.transform);
-			txtFeedback.text = f["message"];
-			if (string.Equals( f["type"], "POSITIVE"))
-				txtFeedback.color = new Color(0, 1, 0);
-			if (string.Equals( f["type"], "NEGATIVE"))
-				txtFeedback.color = new Color(1, 0, 0);
-			
-			RectTransform transform = txtFeedback.transform as RectTransform;   
-			transform.anchoredPosition = new Vector2(0, feedbackMessages.Count * 50 );
-			
-			feedbackMessages.Add(txtFeedback);
-			
-			// log badge
-			if (string.Equals(f["type"], "BADGE"))
-			{
-				badgesWon.Add(f);
-			}
-		}
-		
-		endGame ();
-		stream3.Close();
-		
-		mouseC.UpdateFeedback ();
-	}
-	
-	public IEnumerator endGameplay()
+	public IEnumerator endGameplay(bool win)
 	{
 		print ("--- end Gameplay ---");
 		WebAsync webAsync = new WebAsync();
-		
-		string URL = baseURL + "/gameplay/"+ idGameplay + "/end";
+		string winString = (win) ? "win" : "lose";
+		string URL = baseURL + "/gameplay/"+ idGameplay + "/end/" + winString;
 		
 		WebRequest wr = getPOSTEmptyrequest (URL);
 		
@@ -609,7 +396,7 @@ public class EngAGe : MonoBehaviour {
 		print ("Gameplay Ended! return: " + tmpMessage);
 		stream.Close();
 	}
-	
+
 	public IEnumerator updateScores()
 	{
 		print ("--- getScores ---");
@@ -632,25 +419,8 @@ public class EngAGe : MonoBehaviour {
 		scores = JSON.Parse(tmpMessage).AsArray;
 		print ("Scores received! " + scores.ToString());
 		stream.Close();
-		
-		mouseC.UpdateScores();
 	}
-	
-	public void endGame()
-	{
-		foreach (JSONNode f in feedback)
-		{
-			if (string.Equals(f["final"], "lose"))
-			{
-				mouseC.loseGame();
-			}
-			else if (string.Equals(f["final"], "win"))
-			{
-				mouseC.winGame();
-			}
-		}
-	}
-	
+
 	public IEnumerator updateFeedback()
 	{
 		print ("--- update Feedback ---");
@@ -672,41 +442,17 @@ public class EngAGe : MonoBehaviour {
 		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
 		feedback = JSON.Parse(tmpMessage).AsArray;
 		print ("Feedback received! " + feedback.ToString());
-		foreach (JSONNode f in feedback)
-		{
-			// create a new text in panel messages
-			Text txtFeedback = (Text)Instantiate(textFeedback);
-			txtFeedback.name = "txt_" + f["name"];
-			txtFeedback.transform.SetParent(pnl_messages.transform);
-			txtFeedback.text = f["message"];
-			if (string.Equals( f["type"], "POSITIVE"))
-				txtFeedback.color = new Color(0, 1, 0);
-			if (string.Equals( f["type"], "NEGATIVE"))
-				txtFeedback.color = new Color(1, 0, 0);
-			
-			RectTransform transform = txtFeedback.transform as RectTransform;   
-			transform.anchoredPosition = new Vector2(0, feedbackMessages.Count * 50 );
-			
-			feedbackMessages.Add(txtFeedback);
-			// log badge
-			if (string.Equals(f["type"], "BADGE"))
-			{
-				badgesWon.Add(f);
-			}
-			
-		}
-		
-		endGame ();
+
+		uiScript.RecieveFeedback ();
+
 		stream.Close();
-		
-		mouseC.UpdateFeedback();
 	}
-	
-	public IEnumerator getGameDesc()
+
+	public IEnumerator getGameDesc(int p_idSG)
 	{
 		print ("--- get SG ---");
 		
-		string URL = baseURL + "/seriousgame/" + idSG + "/version/" + version;
+		string URL = baseURL + "/seriousgame/" + p_idSG + "/version/" + version;
 		
 		WebRequest wr = getGETrequest (URL);	
 		
@@ -725,5 +471,32 @@ public class EngAGe : MonoBehaviour {
 		print ("Serious game detailed received! " + seriousGame.ToString());
 		stream.Close();
 	}
-	*/
+
+	
+	public IEnumerator getBadgesWon(int p_idSG)
+	{
+		print ("--- get Badges ---");
+		
+		string URL = baseURL + "/badges/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
+		
+		WebRequest wr = getGETrequest (URL);	
+		
+		WebAsync webAsync = new WebAsync();
+		
+		StartCoroutine(webAsync.GetResponse(wr));
+		
+		while(! webAsync.isResponseCompleted)
+		{
+			yield return null;
+		}
+		
+		Stream stream = webAsync.requestState.webResponse.GetResponseStream();
+		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
+		badgesWon = JSON.Parse(tmpMessage).AsArray;
+		print ("Badges received! " + badgesWon.ToString());
+
+		uiScript.RecieveBadges ();
+
+		stream.Close();
+	}
 }

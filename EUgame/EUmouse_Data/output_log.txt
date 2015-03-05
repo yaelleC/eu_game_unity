@@ -18,7 +18,7 @@ Platform assembly: C:\Users\Yaelle\Documents\PhD\eu_game\EUgame\EUmouse_Data\Man
 Loading C:\Users\Yaelle\Documents\PhD\eu_game\EUgame\EUmouse_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\Yaelle\Documents\PhD\eu_game\EUgame\EUmouse_Data\Managed\ICSharpCode.SharpZipLib.dll (this message is harmless)
 Loading C:\Users\Yaelle\Documents\PhD\eu_game\EUgame\EUmouse_Data\Managed\ICSharpCode.SharpZipLib.dll into Unity Child Domain
-- Completed reload, in  0.244 seconds
+- Completed reload, in  0.077 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 XInput1_3.dll not found.
@@ -29,18 +29,1112 @@ Platform assembly: C:\Users\Yaelle\Documents\PhD\eu_game\EUgame\EUmouse_Data\Man
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-{"idSG": 88, "username": "yaelle", "password": "1708"}
+{"idSG": 89, "username": " ", "password": " "}
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
 Platform assembly: C:\Users\Yaelle\Documents\PhD\eu_game\EUgame\EUmouse_Data\Managed\Mono.Security.dll (this message is harmless)
----- GetResponse ----wait for call completioncall completed{"student":{"id":9,"username":"yaelle","idSchool":1,"gender":"f","dateBirth":"1988-08-17"},"loginSuccess":true,"params":[{"name":"age","type":"Int"},{"name":"grade","type":"String"},{"name":"gender","type":"Char"}],"version":0}
+---- GetResponse ----wait for call completioncall completed{"loginSuccess":false,"params":[{"name":"age","type":"Int"},{"name":"grade","type":"String"},{"name":"gender","type":"Char"}],"version":0}
  
 (Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 
-UnloadTime: 3.292279 ms
+UnloadTime: 10.648986 ms
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 207.
-Total: 0.951366 ms (FindLiveObjects: 0.013027 ms CreateObjectMapping: 0.024080 ms MarkObjects: 0.243170 ms  DeleteObjects: 0.004342 ms)
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 209.
+Total: 2.712380 ms (FindLiveObjects: 0.028817 ms CreateObjectMapping: 0.024869 ms MarkObjects: 0.672667 ms  DeleteObjects: 0.010658 ms)
+
+UnloadTime: 1.789831 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 460.
+Total: 2.969762 ms (FindLiveObjects: 0.053292 ms CreateObjectMapping: 0.034738 ms MarkObjects: 1.068609 ms  DeleteObjects: 0.055266 ms)
+
+--- get SG ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completionsetting badge dialog inactive
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedSerious game detailed received! {"feedback":{"master_time":{"message":"You played more than 30 minutes", "type":"badge"}, "end_win":{"message":"Well done, you won the game :)", "final":"win"}, "novice_time":{"message":"You played more than 10 minutes", "type":"badge"}, "gold_medal":{"message":"You found 200 EU countries", "type":"badge"}, "performance":{"message":"You won 10+ times", "type":"badge"}, "end_lose":{"message":"Sorry, you lost the game :(", "final":"lose"}, "correct_country":{"message":"Well done, [country] is indeed part of the EU", "type":"positive"}, "effort":{"message":"You played 10+ times", "type":"badge"}, "silver_medal":{"message":"You found 100 EU countries", "type":"badge"}, "expert_time":{"message":"You played more than 60 minutes", "type":"badge"}, "wrong_country":{"message":"Nope, [country] is not part of the EU", "type":"negative"}, "bronze_medal":{"message":"You found 50 EU countries", "type":"badge"}}, "learningOutcomes":{"eu_countries":{"desc":"distinct countries of the EU left to find", "feedbackTriggered":[ {"limit":"1", "sign":"<", "feedback":[ {"immediate":"true", "name":"end_win"} ]} ], "value":"28"}, "lives":{"desc":"number of lives the player has", "feedbackTriggered":[ {"limit":"1", "sign":"<", "feedback":[ {"immediate":"true", "name":"end_lose"} ]} ], "value":"3"}, "eu_score":{"desc":"overall score, number of correct countries identified", "feedbackTriggered":[  ], "value":"0"}}, "inactivityFeedback":[  ], "player":[ {"name":"age", "type":"Int"}, {"name":"grade", "type":"String"}, {"name":"gender", "type":"Char"} ], "evidenceModel":{"countryReSelected":{"desc":"When a player selects a country he/she had already selected", "reactions":[ {"feedback":[ {"immediate":"false", "name":"correct_country"} ], "values":[ {"country":"austria"}, {"country":"belgium"}, {"country":"bulgaria"}, {"country":"croatia"}, {"country":"cyprus"}, {"country":"czech_republic"}, {"country":"denmark"}, {"country":"estonia"}, {"country":"finland"}, {"country":"france"}, {"country":"germany"}, {"country":"greece"}, {"country":"hungary"}, {"country":"ireland"}, {"country":"italy"}, {"country":"latvia"}, {"country":"lithuania"}, {"country":"luxembourg"}, {"country":"malta"}, {"country":"netherlands"}, {"country":"poland"}, {"country":"portugal"}, {"country":"romania"}, {"country":"slovakia"}, {"country":"slovenia"}, {"country":"spain"}, {"country":"sweden"}, {"country":"united_kingdom"} ], "marks":[ {"mark":"1", "learningOutcome":"eu_score"} ]}, {"else":"true", "feedback":[  ], "marks":[ {"mark":"-1", "learningOutcome":"lives"} ]} ], "params":{"country":"String"}}, "newCountrySelected":{"desc":"When a player selects a country for the first time", "reactions":[ {"feedback":[ {"immediate":"false", "name":"correct_country"} ], "values":[ {"country":"austria"}, {"country":"belgium"}, {"country":"bulgaria"}, {"country":"croatia"}, {"country":"cyprus"}, {"country":"czech_republic"}, {"country":"denmark"}, {"country":"estonia"}, {"country":"finland"}, {"country":"france"}, {"country":"germany"}, {"country":"greece"}, {"country":"hungary"}, {"country":"ireland"}, {"country":"italy"}, {"country":"latvia"}, {"country":"lithuania"}, {"country":"luxembourg"}, {"country":"malta"}, {"country":"netherlands"}, {"country":"poland"}, {"country":"portugal"}, {"country":"romania"}, {"country":"slovakia"}, {"country":"slovenia"}, {"country":"spain"}, {"country":"sweden"}, {"country":"united_kingdom"} ], "marks":[ {"mark":"-1", "learningOutcome":"eu_countries"}, {"mark":"1", "learningOutcome":"eu_score"} ]}, {"else":"true", "feedback":[  ], "marks":[ {"mark":"-1", "learningOutcome":"lives"} ]} ], "params":{"country":"String"}}}, "badgeModel":[ {"limit":"4", "sign":">", "feedback":[ "effort" ], "function":"numberGameplays"}, {"limit":"9", "sign":">", "feedback":[ "performance" ], "function":"numberWin"}, {"limit":"60", "sign":">", "feedback":[ "expert_time" ], "function":"totalTime"}, {"limit":"30", "sign":">", "feedback":[ "master_time" ], "function":"totalTime"}, {"limit":"10", "sign":">", "feedback":[ "novice_time" ], "function":"totalTime"}, {"limit":"199", "sign":">", "feedback":[ "gold_medal" ], "outcome":"eu_score", "function":"sumScore"}, {"limit":"99", "sign":">", "feedback":[ "silver_medal" ], "outcome":"eu_score", "function":"sumScore"}, {"limit":"49", "sign":">", "feedback":[ "bronze_medal" ], "outcome":"eu_score", "function":"sumScore"} ], "seriousGame":{"genre":"runner", "idDeveloper":"1", "ageMin":"10", "description":"This is a mini serious game that teaches you to identify countries part of the European Union", "subject":"geography", "name":"EU mouse", "ageMax":"99", "public":"true", "lang":"EN", "country":"UK"}}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- startGameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Started! id: 548
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- getScores ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedScores received! [ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"28.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"3.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"0.0", "type":"null"} ]
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+UnloadTime: 1.858124 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 47 unused Assets to reduce memory usage. Loaded Objects now: 1016.
+Total: 1.444813 ms (FindLiveObjects: 0.048160 ms CreateObjectMapping: 0.022106 ms MarkObjects: 0.473314 ms  DeleteObjects: 0.225011 ms)
+
+--- get SG ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completionscore (eu_countries) : eu_countries
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+score (lives) : lives
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+score (eu_score) : eu_score
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedSerious game detailed received! {"feedback":{"master_time":{"message":"You played more than 30 minutes", "type":"badge"}, "end_win":{"message":"Well done, you won the game :)", "final":"win"}, "novice_time":{"message":"You played more than 10 minutes", "type":"badge"}, "gold_medal":{"message":"You found 200 EU countries", "type":"badge"}, "performance":{"message":"You won 10+ times", "type":"badge"}, "end_lose":{"message":"Sorry, you lost the game :(", "final":"lose"}, "correct_country":{"message":"Well done, [country] is indeed part of the EU", "type":"positive"}, "effort":{"message":"You played 10+ times", "type":"badge"}, "silver_medal":{"message":"You found 100 EU countries", "type":"badge"}, "expert_time":{"message":"You played more than 60 minutes", "type":"badge"}, "wrong_country":{"message":"Nope, [country] is not part of the EU", "type":"negative"}, "bronze_medal":{"message":"You found 50 EU countries", "type":"badge"}}, "learningOutcomes":{"eu_countries":{"desc":"distinct countries of the EU left to find", "feedbackTriggered":[ {"limit":"1", "sign":"<", "feedback":[ {"immediate":"true", "name":"end_win"} ]} ], "value":"28"}, "lives":{"desc":"number of lives the player has", "feedbackTriggered":[ {"limit":"1", "sign":"<", "feedback":[ {"immediate":"true", "name":"end_lose"} ]} ], "value":"3"}, "eu_score":{"desc":"overall score, number of correct countries identified", "feedbackTriggered":[  ], "value":"0"}}, "inactivityFeedback":[  ], "player":[ {"name":"age", "type":"Int"}, {"name":"grade", "type":"String"}, {"name":"gender", "type":"Char"} ], "evidenceModel":{"countryReSelected":{"desc":"When a player selects a country he/she had already selected", "reactions":[ {"feedback":[ {"immediate":"false", "name":"correct_country"} ], "values":[ {"country":"austria"}, {"country":"belgium"}, {"country":"bulgaria"}, {"country":"croatia"}, {"country":"cyprus"}, {"country":"czech_republic"}, {"country":"denmark"}, {"country":"estonia"}, {"country":"finland"}, {"country":"france"}, {"country":"germany"}, {"country":"greece"}, {"country":"hungary"}, {"country":"ireland"}, {"country":"italy"}, {"country":"latvia"}, {"country":"lithuania"}, {"country":"luxembourg"}, {"country":"malta"}, {"country":"netherlands"}, {"country":"poland"}, {"country":"portugal"}, {"country":"romania"}, {"country":"slovakia"}, {"country":"slovenia"}, {"country":"spain"}, {"country":"sweden"}, {"country":"united_kingdom"} ], "marks":[ {"mark":"1", "learningOutcome":"eu_score"} ]}, {"else":"true", "feedback":[  ], "marks":[ {"mark":"-1", "learningOutcome":"lives"} ]} ], "params":{"country":"String"}}, "newCountrySelected":{"desc":"When a player selects a country for the first time", "reactions":[ {"feedback":[ {"immediate":"false", "name":"correct_country"} ], "values":[ {"country":"austria"}, {"country":"belgium"}, {"country":"bulgaria"}, {"country":"croatia"}, {"country":"cyprus"}, {"country":"czech_republic"}, {"country":"denmark"}, {"country":"estonia"}, {"country":"finland"}, {"country":"france"}, {"country":"germany"}, {"country":"greece"}, {"country":"hungary"}, {"country":"ireland"}, {"country":"italy"}, {"country":"latvia"}, {"country":"lithuania"}, {"country":"luxembourg"}, {"country":"malta"}, {"country":"netherlands"}, {"country":"poland"}, {"country":"portugal"}, {"country":"romania"}, {"country":"slovakia"}, {"country":"slovenia"}, {"country":"spain"}, {"country":"sweden"}, {"country":"united_kingdom"} ], "marks":[ {"mark":"-1", "learningOutcome":"eu_countries"}, {"mark":"1", "learningOutcome":"eu_score"} ]}, {"else":"true", "feedback":[  ], "marks":[ {"mark":"-1", "learningOutcome":"lives"} ]} ], "params":{"country":"String"}}}, "badgeModel":[ {"limit":"4", "sign":">", "feedback":[ "effort" ], "function":"numberGameplays"}, {"limit":"9", "sign":">", "feedback":[ "performance" ], "function":"numberWin"}, {"limit":"60", "sign":">", "feedback":[ "expert_time" ], "function":"totalTime"}, {"limit":"30", "sign":">", "feedback":[ "master_time" ], "function":"totalTime"}, {"limit":"10", "sign":">", "feedback":[ "novice_time" ], "function":"totalTime"}, {"limit":"199", "sign":">", "feedback":[ "gold_medal" ], "outcome":"eu_score", "function":"sumScore"}, {"limit":"99", "sign":">", "feedback":[ "silver_medal" ], "outcome":"eu_score", "function":"sumScore"}, {"limit":"49", "sign":">", "feedback":[ "bronze_medal" ], "outcome":"eu_score", "function":"sumScore"} ], "seriousGame":{"genre":"runner", "idDeveloper":"1", "ageMin":"10", "description":"This is a mini serious game that teaches you to identify countries part of the European Union", "subject":"geography", "name":"EU mouse", "ageMax":"99", "public":"true", "lang":"EN", "country":"UK"}}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"italy"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"27.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"3.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"1.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"serbia"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"27.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"2.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"1.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"austria"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"26.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"2.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"2.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"macedonia"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"26.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"2.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"denmark"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"25.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"3.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"croatia"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"24.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"4.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"czech_republic"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"23.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"5.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (countryReSelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "countryReSelected", "values": {"country":"czech_republic"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"23.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"6.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"united_kingdom"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"22.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"7.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"cyprus"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"21.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"8.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (countryReSelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "countryReSelected", "values": {"country":"austria"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"21.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"9.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"sweden"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"20.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"10.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"belgium"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"19.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"11.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"estonia"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"18.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"12.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"hungary"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"17.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"13.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"france"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"16.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"14.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (countryReSelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "countryReSelected", "values": {"country":"united_kingdom"}} assessed! returned: {"feedback":[  ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"16.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"1.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"15.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- assess action (newCountrySelected) ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update feedback --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+-- Update scores --
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedAction {"action": "newCountrySelected", "values": {"country":"belarus"}} assessed! returned: {"feedback":[ {"message":"Sorry, you lost the game :(", "id":"427", "final":"lose", "name":"end_lose", "type":"null"} ], "scores":[ {"id":"174", "startingValue":"28.0", "description":"distinct countries of the EU left to find", "name":"eu_countries", "value":"16.0", "type":"null"}, {"id":"175", "startingValue":"3.0", "description":"number of lives the player has", "name":"lives", "value":"0.0", "type":"null"}, {"id":"176", "startingValue":"0.0", "description":"overall score, number of correct countries identified", "name":"eu_score", "value":"15.0", "type":"null"} ]}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 1
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completion--- end Gameplay ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completioncall completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedGameplay Ended! return: 0
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+UnloadTime: 4.253909 ms
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 305 unused Assets to reduce memory usage. Loaded Objects now: 460.
+Total: 7.247752 ms (FindLiveObjects: 0.114084 ms CreateObjectMapping: 0.075003 ms MarkObjects: 3.536240 ms  DeleteObjects: 1.753514 ms)
+
+--- get SG ---
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+---- GetResponse ----wait for call completionsetting badge dialog inactive
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
+
+call completedSerious game detailed received! {"feedback":{"master_time":{"message":"You played more than 30 minutes", "type":"badge"}, "end_win":{"message":"Well done, you won the game :)", "final":"win"}, "novice_time":{"message":"You played more than 10 minutes", "type":"badge"}, "gold_medal":{"message":"You found 200 EU countries", "type":"badge"}, "performance":{"message":"You won 10+ times", "type":"badge"}, "end_lose":{"message":"Sorry, you lost the game :(", "final":"lose"}, "correct_country":{"message":"Well done, [country] is indeed part of the EU", "type":"positive"}, "effort":{"message":"You played 10+ times", "type":"badge"}, "silver_medal":{"message":"You found 100 EU countries", "type":"badge"}, "expert_time":{"message":"You played more than 60 minutes", "type":"badge"}, "wrong_country":{"message":"Nope, [country] is not part of the EU", "type":"negative"}, "bronze_medal":{"message":"You found 50 EU countries", "type":"badge"}}, "learningOutcomes":{"eu_countries":{"desc":"distinct countries of the EU left to find", "feedbackTriggered":[ {"limit":"1", "sign":"<", "feedback":[ {"immediate":"true", "name":"end_win"} ]} ], "value":"28"}, "lives":{"desc":"number of lives the player has", "feedbackTriggered":[ {"limit":"1", "sign":"<", "feedback":[ {"immediate":"true", "name":"end_lose"} ]} ], "value":"3"}, "eu_score":{"desc":"overall score, number of correct countries identified", "feedbackTriggered":[  ], "value":"0"}}, "inactivityFeedback":[  ], "player":[ {"name":"age", "type":"Int"}, {"name":"grade", "type":"String"}, {"name":"gender", "type":"Char"} ], "evidenceModel":{"countryReSelected":{"desc":"When a player selects a country he/she had already selected", "reactions":[ {"feedback":[ {"immediate":"false", "name":"correct_country"} ], "values":[ {"country":"austria"}, {"country":"belgium"}, {"country":"bulgaria"}, {"country":"croatia"}, {"country":"cyprus"}, {"country":"czech_republic"}, {"country":"denmark"}, {"country":"estonia"}, {"country":"finland"}, {"country":"france"}, {"country":"germany"}, {"country":"greece"}, {"country":"hungary"}, {"country":"ireland"}, {"country":"italy"}, {"country":"latvia"}, {"country":"lithuania"}, {"country":"luxembourg"}, {"country":"malta"}, {"country":"netherlands"}, {"country":"poland"}, {"country":"portugal"}, {"country":"romania"}, {"country":"slovakia"}, {"country":"slovenia"}, {"country":"spain"}, {"country":"sweden"}, {"country":"united_kingdom"} ], "marks":[ {"mark":"1", "learningOutcome":"eu_score"} ]}, {"else":"true", "feedback":[  ], "marks":[ {"mark":"-1", "learningOutcome":"lives"} ]} ], "params":{"country":"String"}}, "newCountrySelected":{"desc":"When a player selects a country for the first time", "reactions":[ {"feedback":[ {"immediate":"false", "name":"correct_country"} ], "values":[ {"country":"austria"}, {"country":"belgium"}, {"country":"bulgaria"}, {"country":"croatia"}, {"country":"cyprus"}, {"country":"czech_republic"}, {"country":"denmark"}, {"country":"estonia"}, {"country":"finland"}, {"country":"france"}, {"country":"germany"}, {"country":"greece"}, {"country":"hungary"}, {"country":"ireland"}, {"country":"italy"}, {"country":"latvia"}, {"country":"lithuania"}, {"country":"luxembourg"}, {"country":"malta"}, {"country":"netherlands"}, {"country":"poland"}, {"country":"portugal"}, {"country":"romania"}, {"country":"slovakia"}, {"country":"slovenia"}, {"country":"spain"}, {"country":"sweden"}, {"country":"united_kingdom"} ], "marks":[ {"mark":"-1", "learningOutcome":"eu_countries"}, {"mark":"1", "learningOutcome":"eu_score"} ]}, {"else":"true", "feedback":[  ], "marks":[ {"mark":"-1", "learningOutcome":"lives"} ]} ], "params":{"country":"String"}}}, "badgeModel":[ {"limit":"4", "sign":">", "feedback":[ "effort" ], "function":"numberGameplays"}, {"limit":"9", "sign":">", "feedback":[ "performance" ], "function":"numberWin"}, {"limit":"60", "sign":">", "feedback":[ "expert_time" ], "function":"totalTime"}, {"limit":"30", "sign":">", "feedback":[ "master_time" ], "function":"totalTime"}, {"limit":"10", "sign":">", "feedback":[ "novice_time" ], "function":"totalTime"}, {"limit":"199", "sign":">", "feedback":[ "gold_medal" ], "outcome":"eu_score", "function":"sumScore"}, {"limit":"99", "sign":">", "feedback":[ "silver_medal" ], "outcome":"eu_score", "function":"sumScore"}, {"limit":"49", "sign":">", "feedback":[ "bronze_medal" ], "outcome":"eu_score", "function":"sumScore"} ], "seriousGame":{"genre":"runner", "idDeveloper":"1", "ageMin":"10", "description":"This is a mini serious game that teaches you to identify countries part of the European Union", "subject":"geography", "name":"EU mouse", "ageMax":"99", "public":"true", "lang":"EN", "country":"UK"}}
+ 
+(Filename: C:/BuildAgent/work/d63dfc6385190b60/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 49)
 

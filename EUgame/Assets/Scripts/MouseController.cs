@@ -46,7 +46,7 @@ public class MouseController : MonoBehaviour {
 	public Image life3;
 
 	public UIManagerScript uiScript;
-
+	public EngAGe engage;
 
 	private List<string> countriesFound;
 	
@@ -70,7 +70,7 @@ public class MouseController : MonoBehaviour {
 		
 		//correctEUcountries = new List<string>(euCountriesToFind);
 
-		scores = uiScript.getScores ();
+		scores = engage.getScores();
 		foreach (JSONNode score in scores)
 		{
 			string scoreName = score["name"];
@@ -107,18 +107,6 @@ public class MouseController : MonoBehaviour {
 		if (collider.gameObject.CompareTag("Flags"))
 			CollectFlag(collider);
 	}
-
-	/*bool isCorrectEUcountry(string country)
-	{
-		foreach (string euCountry in correctEUcountries)
-		{
-			if (country.Equals(euCountry))
-			{
-				return true;
-			}
-		}
-		return false;
-	}*/
 	
 	void CollectFlag(Collider2D flagCollider)
 	{
@@ -131,14 +119,14 @@ public class MouseController : MonoBehaviour {
 		{
 			JSONNode values = JSON.Parse("{ \"country\" : \"" + spr_flag.name + "\" }");
 			string action = "countryReSelected";
-			StartCoroutine(uiScript.assess(action, values));
+			StartCoroutine(engage.assess(action, values));
 		}
 		// country selected for the first time
 		else
 		{
 			JSONNode values = JSON.Parse("{ \"country\" : \"" + spr_flag.name + "\" }");
 			string action = "newCountrySelected";
-			StartCoroutine(uiScript.assess(action, values));
+			StartCoroutine(engage.assess(action, values));
 		}
 
 		UpdateScores();
@@ -184,33 +172,6 @@ public class MouseController : MonoBehaviour {
 
 		waitFeedback++;
 
-		/*if (waitFeedback > 50)
-		{
-			StartCoroutine (uiScript.updateFeedback());
-			waitFeedback = 0;
-			UpdateFeedback();
-
-			foreach (JSONNode f in feedback)
-			{
-				string fName = f["name"];
-				string fMessage = f["message"];
-				string fFinal = f["final"];
-
-				if (string.Equals(fFinal, "true"))
-				{
-					if (string.Equals(fName, "end_win"))
-					{
-						endWin = true;
-					}
-					else if (string.Equals(fName, "end_lose"))
-					{
-						endLose = true;
-					}
-				}
-			}
-			scoreUpdated = false;
-		}*/
-
 		if (jetpackActive)
 		{
 			rigidbody2D.AddForce(new Vector2(0, jetpackForce));
@@ -221,16 +182,16 @@ public class MouseController : MonoBehaviour {
 			newVelocity.x = forwardMovementSpeed;
 			rigidbody2D.velocity = newVelocity;
 		}
-		if (endWin) 
+		if (endWin && !restartWinDialog.activeInHierarchy) 
 		{
-			StartCoroutine (uiScript.endGameplay());
+			StartCoroutine (engage.endGameplay(true));
 			win = true;
 			animator.SetBool("win", win);
 			restartWinDialog.SetActive(true);
 		}
-		if (endLose)
+		if (endLose && !restartLoseDialog.activeInHierarchy) 
 		{
-			StartCoroutine (uiScript.endGameplay());
+			StartCoroutine (engage.endGameplay(false));
 			dead = true;
 			animator.SetBool ("dead", true);
 			restartLoseDialog.SetActive(true);
@@ -294,8 +255,6 @@ public class MouseController : MonoBehaviour {
 
 	public void OpenBadges()
 	{
-
-
 		bool jetpackActive = Input.GetButton("Fire1");
 		jetpackActive = jetpackActive && !dead && !win;
 
@@ -346,14 +305,14 @@ public class MouseController : MonoBehaviour {
 	public void UpdateScores()
 	{
 		print ("-- Update scores --");
-		scores = uiScript.getScores();
+		scores = engage.getScores();
 		scoreUpdated = true;
 	}
-	
+
 	public void UpdateFeedback()
 	{
 		print ("-- Update feedback --");
-		scores = uiScript.getFeedback();
+		feedback = engage.getFeedback();
 	}
 
 	public void winGame()
