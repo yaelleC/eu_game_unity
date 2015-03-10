@@ -1,12 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GeneratorScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UIManagerScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\GeneratorScript.cs" Line="102" Column="66" />
-      <File FileName="Assets\Scripts\EngAGe.cs" Line="465" Column="22" />
-      <File FileName="Assets\Scripts\UIManagerScript.cs" Line="69" Column="5" />
-      <File FileName="Assets\Scripts\MouseController.cs" Line="120" Column="64" />
-      <File FileName="c:\Users\Yaelle\Documents\PhD\eu_game\EUgame\Assets\Scripts\BadgeScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UIManagerScript.cs" Line="330" Column="5" />
+      <File FileName="Assets\Scripts\EngAGe.cs" Line="547" Column="5" />
+      <File FileName="Assets\Scripts\MouseController.cs" Line="14" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

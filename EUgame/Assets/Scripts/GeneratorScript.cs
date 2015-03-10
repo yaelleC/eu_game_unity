@@ -6,6 +6,9 @@ using System.Text;
 
 public class GeneratorScript : MonoBehaviour {
 
+	public UIManagerScript uiScript;
+	private int countryNum = 0;
+
 	public GameObject[] availableRooms;
 	
 	public List<GameObject> currentRooms;
@@ -98,21 +101,25 @@ public class GeneratorScript : MonoBehaviour {
 		float rotation = Random.Range(objectsMinRotation, objectsMaxRotation);
 		obj.transform.rotation = Quaternion.Euler(Vector3.forward * rotation);
 
-		int randomSprite = Random.Range (0, availableCountries.Length);
-		obj.GetComponent<SpriteRenderer> ().sprite = availableCountries [randomSprite];
+		if (uiScript.getDifficulty() == 3)
+		{
+			int randomSprite = Random.Range (0, availableFlags.Length);
+			obj.GetComponent<SpriteRenderer> ().sprite = availableFlags [randomSprite];
+		}
+		else if (uiScript.getDifficulty() == 2)
+		{
+			int randomSprite = Random.Range (0, availableCountries.Length);
+			obj.GetComponent<SpriteRenderer> ().sprite = availableCountries [randomSprite];
+		}
+		else
+		{
+			if (countryNum == availableCountries.Length)
+			{
+				countryNum = 0;
+			}
+			obj.GetComponent<SpriteRenderer> ().sprite = availableCountries [countryNum++];
+		}
 
-		// automatically write country name
-		// doesn't work because not on canvas
-		/*
-		Text country = (Text)Instantiate (txtCountry);
-		country.name = "txt_" + availableSprites [randomSprite].name;
-		country.transform.SetParent(canvas.transform);
-		country.text = availableSprites [randomSprite].name;
-		
-		RectTransform transform = country.transform as RectTransform;   
-		transform.anchoredPosition = new Vector2(objectPositionX, randomY-50 );
-
-		textLabels.Add (country);*/
 		objects.Add(obj);            
 	}
 

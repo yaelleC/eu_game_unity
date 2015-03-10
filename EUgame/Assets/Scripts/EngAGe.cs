@@ -12,12 +12,13 @@ public class EngAGe : MonoBehaviour {
 		
 	private static int idStudent;
 	private static int idPlayer = -1;
-	private static int version;
+	private static int version = 0;
 	private static int idGameplay;
 	private static JSONArray parameters;
 	private static JSONArray scores = new JSONArray ();
 	private static JSONArray feedback = new JSONArray ();
 	private static JSONArray badgesWon = new JSONArray();
+	private static JSONNode leaderboard = new JSONNode();
 
 	private static JSONNode seriousGame = new JSONNode();
 	
@@ -76,12 +77,17 @@ public class EngAGe : MonoBehaviour {
 	{
 		return badgesWon;
 	}
+	public JSONNode getLeaderboardList()
+	{
+		return leaderboard;
+	}
 	public JSONNode getSG()
 	{
 		return seriousGame;
 	}
 
 	// ************* Web services calls ****************** //
+	//private string baseURL = "http://docker:8080";
 	private string baseURL = "http://146.191.107.189:8080";
 
 	public WebRequest getGETrequest(string url)
@@ -256,7 +262,7 @@ public class EngAGe : MonoBehaviour {
 		feedback = new JSONArray ();
 		seriousGame = new JSONNode();
 		
-		badgesWon = new JSONArray();
+		//badgesWon = new JSONArray();
 		
 		print ("--- startGameplay ---");
 		
@@ -369,10 +375,19 @@ public class EngAGe : MonoBehaviour {
 		feedback = returnAssess["feedback"].AsArray;
 		scores = returnAssess["scores"].AsArray;
 		print ("Action " + putDataString + " assessed! returned: " + returnAssess.ToString());
+		foreach (JSONNode f in feedback)
+		{			
+			// log badge
+			if (string.Equals(f["type"], "BADGE"))
+			{
+				badgesWon.Add(f);
+			}	
+		}
 
 		stream.Close();
 				
-		uiScript.RecieveFeedback ();
+		uiScript.ReceiveFeedback ();
+		uiScript.ReceiveScore ();
 	}
 	
 	public IEnumerator endGameplay(bool win)
@@ -418,6 +433,7 @@ public class EngAGe : MonoBehaviour {
 		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
 		scores = JSON.Parse(tmpMessage).AsArray;
 		print ("Scores received! " + scores.ToString());
+		uiScript.ReceiveScore ();
 		stream.Close();
 	}
 
@@ -442,8 +458,15 @@ public class EngAGe : MonoBehaviour {
 		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
 		feedback = JSON.Parse(tmpMessage).AsArray;
 		print ("Feedback received! " + feedback.ToString());
-
-		uiScript.RecieveFeedback ();
+		foreach (JSONNode f in feedback)
+		{			
+			// log badge
+			if (string.Equals(f["type"], "BADGE"))
+			{
+				badgesWon.Add(f);
+			}	
+		}
+		uiScript.ReceiveFeedback ();
 
 		stream.Close();
 	}
@@ -469,6 +492,7 @@ public class EngAGe : MonoBehaviour {
 		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
 		seriousGame = JSON.Parse(tmpMessage);
 		print ("Serious game detailed received! " + seriousGame.ToString());
+
 		stream.Close();
 	}
 
@@ -476,8 +500,9 @@ public class EngAGe : MonoBehaviour {
 	public IEnumerator getBadgesWon(int p_idSG)
 	{
 		print ("--- get Badges ---");
-		
+
 		string URL = baseURL + "/badges/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
+		print (URL);
 		
 		WebRequest wr = getGETrequest (URL);	
 		
@@ -495,8 +520,33 @@ public class EngAGe : MonoBehaviour {
 		badgesWon = JSON.Parse(tmpMessage).AsArray;
 		print ("Badges received! " + badgesWon.ToString());
 
-		uiScript.RecieveBadges ();
-
 		stream.Close();
 	}
+
+	public IEnumerator getLeaderboard(int p_idSG)
+	{
+		print ("--- get Leader Board ---");
+		
+		string URL = baseURL + "/learninganalytics/leaderboard/seriousgame/" + p_idSG + "/version/" + version;
+		
+		WebRequest wr = getGETrequest (URL);	
+		
+		WebAsync webAsync = new WebAsync();
+		
+		StartCoroutine(webAsync.GetResponse(wr));
+		
+		while(! webAsync.isResponseCompleted)
+		{
+			yield return null;
+		}
+		
+		Stream stream = webAsync.requestState.webResponse.GetResponseStream();
+		string tmpMessage = new StreamReader(stream).ReadToEnd().ToString();
+		leaderboard = JSON.Parse(tmpMessage);
+		print ("Leader board received! " + leaderboard.ToString());
+				
+		stream.Close();
+	}
+
+	//learninganalytics/leaderboard/seriousgame/47/version/0
 }
