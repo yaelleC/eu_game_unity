@@ -18,83 +18,21 @@ public class MouseController : MonoBehaviour {
 	public ParticleSystem jetpack;
 	public ParticleSystem winningExplosion;
 	
-	private bool dead = false;
-	private bool win = false;
-
-	public int lives;
-	public JSONArray scores;
-	public JSONArray feedback;
-	
-	public Texture2D coinIconTexture;
-	public Texture2D livesIconTexture;
-	public Texture2D euIconTexture;
-	
 	public AudioClip coinCollectSound;
-	public AudioClip laserSound;
 	public AudioSource jetpackAudio;	
 	public AudioSource footstepsAudio;
-	
-	public Text pointsLabel;
-	public Text euLabel;
-	public GameObject restartWinDialog;
-	public GameObject restartLoseDialog;
-	public GameObject badgeDialog;
-	public GameObject feedbackDialog;
 
-	public Image life1;
-	public Image life2;
-	public Image life3;
-
-	public UIManagerScript uiScript;
 	public EngAGe engage;
 
 	private List<string> countriesFound;
 	
 	private bool endWin = false;
-	private bool endLose = false;
-
-	private int waitFeedback = 0;
-
-	private bool scoreUpdated = false;
+	private bool endLose = false;	
 
 	// Use this for initialization
 	void Start () {
 		countriesFound = new List<string>();
-		scores = new JSONArray ();
-		feedback = new JSONArray ();
 		animator = GetComponent<Animator>();
-		restartWinDialog.SetActive(false);
-		restartLoseDialog.SetActive(false);
-		badgeDialog.SetActive (false);
-		feedbackDialog.SetActive (false);
-		
-		//correctEUcountries = new List<string>(euCountriesToFind);
-
-		scores = engage.getScores();
-		foreach (JSONNode score in scores)
-		{
-			string scoreName = score["name"];
-			string scoreValue = score["value"];
-			
-			string s = "score (" + scoreName + ") : ";
-			if (string.Equals (score["name"], "eu_score"))
-			{
-				s += "eu_score";
-				pointsLabel.text = float.Parse(scoreValue).ToString();
-			}
-			else if (string.Equals (score["name"], "eu_countries"))
-			{
-				s += "eu_countries";
-				euLabel.text = float.Parse(scoreValue).ToString();
-			}
-			else if (string.Equals (score["name"], "lives"))
-			{
-				s += "lives";
-				float livesFloat = float.Parse(scoreValue);
-				lives = Mathf.RoundToInt(livesFloat);
-			}
-			print(s);
-		}
 	}
 	
 	// Update is called once per frame
@@ -110,118 +48,56 @@ public class MouseController : MonoBehaviour {
 	
 	void CollectFlag(Collider2D flagCollider)
 	{
-		Sprite spr_flag = flagCollider.gameObject.GetComponent<SpriteRenderer>().sprite;
-
 		AudioSource.PlayClipAtPoint(coinCollectSound, transform.position);
+
+		// get the name of the country selected
+		Sprite spr_flag = flagCollider.gameObject.GetComponent<SpriteRenderer>().sprite;
 
 		// country already selected
 		if (countriesFound.Contains(spr_flag.name))
 		{
+			// create a JSON with one value, "country" (only parameter of countryReSelected)
 			JSONNode values = JSON.Parse("{ \"country\" : \"" + spr_flag.name + "\" }");
-			string action = "countryReSelected";
-			StartCoroutine(engage.assess(action, values));
+			// ask EngAGe to assess the action based on the config file
+			StartCoroutine(engage.assess("countryReSelected", values));
 		}
 		// country selected for the first time
 		else
 		{
+			// create a JSON with one value, "country" (only parameter of newCountrySelected)
 			JSONNode values = JSON.Parse("{ \"country\" : \"" + spr_flag.name + "\" }");
-			string action = "newCountrySelected";
-			StartCoroutine(engage.assess(action, values));
+			// ask EngAGe to assess the action based on the config file
+			StartCoroutine(engage.assess("newCountrySelected", values));
 		}
-
-		UpdateScores();
-		UpdateFeedback();
-
 		// save country selected
 		countriesFound.Add (spr_flag.name);
 
-
 		flagCollider.gameObject.SetActive (false);
-		//Destroy(flagCollider.gameObject);
 	}
 
 	void FixedUpdate () 
 	{
 		bool jetpackActive = Input.GetButton("Fire1");
-		jetpackActive = jetpackActive && !dead && !win;
-
-		if (scoreUpdated)
-		{
-			UpdateScores();
-			foreach (JSONNode score in scores)
-			{
-				string scoreName = score["name"];
-				string scoreValue = score["value"];
-
-				if (string.Equals(scoreName, "eu_score"))
-				{
-					pointsLabel.text = float.Parse(scoreValue).ToString();
-				}
-				else if (string.Equals(scoreName, "eu_countries"))
-				{
-					euLabel.text = float.Parse(scoreValue).ToString();
-				}
-				else if (string.Equals(scoreName, "lives"))
-				{
-					float livesFloat = float.Parse(scoreValue);
-					lives = Mathf.RoundToInt(livesFloat);
-				}
-			}
-			scoreUpdated = false;
-		}
-
-		waitFeedback++;
+		jetpackActive = jetpackActive && !endLose && !endWin;
 
 		if (jetpackActive)
 		{
 			rigidbody2D.AddForce(new Vector2(0, jetpackForce));
 		}
-		if (!dead && !win)
+		if (!endWin && !endLose)
 		{
 			Vector2 newVelocity = rigidbody2D.velocity;
 			newVelocity.x = forwardMovementSpeed;
 			rigidbody2D.velocity = newVelocity;
 		}
-		if (endWin && !restartWinDialog.activeInHierarchy) 
+		else if (endWin) 
 		{
-			StartCoroutine (engage.endGameplay(true));
-			win = true;
-			animator.SetBool("win", win);
-			restartWinDialog.SetActive(true);
+			animator.SetBool("win", true);
 		}
-		if (endLose && !restartLoseDialog.activeInHierarchy) 
+		else if (endLose) 
 		{
-			StartCoroutine (engage.endGameplay(false));
-			dead = true;
 			animator.SetBool ("dead", true);
-			restartLoseDialog.SetActive(true);
 		}
-
-		if (lives >= 3)
-		{
-			life3.gameObject.SetActive(true);
-			life2.gameObject.SetActive(true);
-			life1.gameObject.SetActive(true);
-		}
-		else if (lives == 2)
-		{
-			life3.gameObject.SetActive(false);
-			life2.gameObject.SetActive(true);
-			life1.gameObject.SetActive(true);
-		}
-		else if (lives == 1)
-		{
-			life3.gameObject.SetActive(false);
-			life2.gameObject.SetActive(false);
-			life1.gameObject.SetActive(true);
-		}
-		else if (lives == 0)
-		{
-			life3.gameObject.SetActive(false);
-			life2.gameObject.SetActive(false);
-			life1.gameObject.SetActive(false);
-		}
-
 
 		UpdateGroundedStatus();
 		AdjustJetpack(jetpackActive);
@@ -237,83 +113,38 @@ public class MouseController : MonoBehaviour {
 
 	void AdjustJetpack (bool jetpackActive)
 	{
-		jetpack.enableEmission = !grounded && !win;
+		jetpack.enableEmission = !grounded && !endWin;
 		jetpack.emissionRate = jetpackActive ? 300.0f : 75.0f; 
 	}
 
 	void AdjustWinningExplosion ()
 	{
-		winningExplosion.enableEmission = win;
+		winningExplosion.enableEmission = endWin;
 	}
 
 	void AdjustFootstepsAndJetpackSound(bool jetpackActive)    
 	{
-		footstepsAudio.enabled = !dead && grounded && !win && !badgeDialog.activeSelf && !feedbackDialog.activeSelf;		
-		jetpackAudio.enabled = !dead && !grounded && !win && !badgeDialog.activeSelf && !feedbackDialog.activeSelf;		
+		footstepsAudio.enabled = !endLose && grounded && !endWin;		
+		jetpackAudio.enabled = !endLose && !grounded && !endWin;		
 		jetpackAudio.volume = jetpackActive ? 1.0f : 0.5f; 
 	}
 
-	public void OpenBadges()
+	public void pause()
 	{
-		bool jetpackActive = Input.GetButton("Fire1");
-		jetpackActive = jetpackActive && !dead && !win;
-
-		badgeDialog.SetActive (!badgeDialog.activeSelf);
-		Time.timeScale = (badgeDialog.activeSelf)? 0 : 1;
-		AdjustFootstepsAndJetpackSound (jetpackActive);
+		Time.timeScale = 0;
+		footstepsAudio.enabled = false;
+		jetpackAudio.enabled = false;	
 	}
-
-	public void CloseBadges()
+	
+	public void unpause()
 	{
-		bool jetpackActive = Input.GetButton("Fire1");
-		jetpackActive = jetpackActive && !dead && !win;
-		badgeDialog.SetActive (false);
 		Time.timeScale = 1;
-		AdjustFootstepsAndJetpackSound (jetpackActive);
-	}
 
-	public void OpenFeedback()
-	{
 		bool jetpackActive = Input.GetButton("Fire1");
-		jetpackActive = jetpackActive && !dead && !win;
-		
-		feedbackDialog.SetActive (!feedbackDialog.activeSelf);
-		Time.timeScale = (feedbackDialog.activeSelf)? 0 : 1;
-		AdjustFootstepsAndJetpackSound (jetpackActive);
-	}
-	
-	public void CloseFeedback()
-	{
-		bool jetpackActive = Input.GetButton("Fire1");
-		jetpackActive = jetpackActive && !dead && !win;
-		feedbackDialog.SetActive (false);
-		Time.timeScale = 1;
+		jetpackActive = jetpackActive && !endLose && !endWin;
 		AdjustFootstepsAndJetpackSound (jetpackActive);
 	}
 
-	public void RestartGame()
-	{
-		uiScript.StartGame ();
-		//Application.LoadLevel (Application.loadedLevelName);
-	}
-	
-	public void ExitToMenu()
-	{
-		Application.LoadLevel ("MenuScene");
-	}
-	
-	public void UpdateScores()
-	{
-		print ("-- Update scores --");
-		scores = engage.getScores();
-		scoreUpdated = true;
-	}
-
-	public void UpdateFeedback()
-	{
-		print ("-- Update feedback --");
-		feedback = engage.getFeedback();
-	}
 
 	public void winGame()
 	{

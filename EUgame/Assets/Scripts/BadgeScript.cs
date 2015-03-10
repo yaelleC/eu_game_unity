@@ -8,61 +8,63 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	
 	public GameObject toolTip;
 	public Text txt_tooltip;
-	public UIManagerScript uiScript;
 	public Sprite activeImage;
 
 	public EngAGe engage;
 
-	private int wait = 0;
-
 	// Use this for initialization
 	void Start () {
+
+		// hide the tooltip for now
 		toolTip.SetActive (false);	
+
+		// get the badges won from EngAGe 
+		JSONArray badges = engage.getBadges ();
+
+		// get name of the badge represented
+		string badgeName = this.name.Replace ("img_badge_", "");
+
+		// if the badge is in EngAGe returned list, use the active image (color badge)
+		foreach (JSONNode b in badges)
+		{
+			if (string.Equals(b["name"], badgeName))
+			{				
+				this.GetComponent<Image>().sprite = activeImage;
+			}
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		wait++;
-		if (wait > 50)
+		// get name of the badge represented
+		string badgeName = this.name.Replace ("img_badge_", "");
+		// if the badge is in EngAGe returned list, use the active image (color badge)
+		foreach (JSONNode b in engage.getBadges())
 		{
-			JSONArray badges = uiScript.getBadges ();
-			string badgeName = this.name.Replace ("img_badge_", "");
-				
-			foreach (JSONNode b in badges)
-			{
-				if (string.Equals(b["name"], badgeName))
-				{
-					this.GetComponent<Image>().sprite = activeImage;
-				}
+			if (string.Equals(b["name"], badgeName))
+			{				
+				this.GetComponent<Image>().sprite = activeImage;
 			}
-			wait = 0;
 		}
 	}
 
-
-
 	public void OnPointerEnter(PointerEventData data)
 	{
-		print ("mouse over");
-
+		// get the configuration file parsed in json format
 		JSONNode sg = engage.getSG ();
+
+		// get name of the badge represented
 		string badgeName = this.name.Replace ("img_badge_", "");
+
+		// update the description to the message defined in the config file
+		// if no message is found the tooltip will display "description not available"
 		string desc = "description not available";
 		if ((sg ["feedback"] != null) && (sg ["feedback"][badgeName] != null))
+		{
 			desc = sg ["feedback"] [badgeName] ["message"];
+		}
 
 		showToolTip (data.position, desc);
-
-		JSONArray badges = engage.getBadges();
-		print (badges.ToString());
-				
-		/*foreach (JSONNode b in badges)
-		{
-			if (string.Equals(b["name"], badgeName))
-			{
-				this.GetComponent<SpriteRenderer> ().sprite = activeImage;
-			}
-		}*/
 	}
 
 	public void OnPointerExit(PointerEventData data)
@@ -76,9 +78,9 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	}
 
 
-	public void showToolTip(Vector2 toolPosition, string badgeDialog)
+	public void showToolTip(Vector2 toolPosition, string tooltipText)
 	{
-		txt_tooltip.text = badgeDialog;
+		txt_tooltip.text = tooltipText;
 		toolTip.SetActive(true);
 	}
 }
