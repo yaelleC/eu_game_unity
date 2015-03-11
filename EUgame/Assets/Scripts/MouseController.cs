@@ -22,8 +22,6 @@ public class MouseController : MonoBehaviour {
 	public AudioSource jetpackAudio;	
 	public AudioSource footstepsAudio;
 
-	public EngAGe engage;
-
 	private List<string> countriesFound;
 	
 	private bool endWin = false;
@@ -53,22 +51,6 @@ public class MouseController : MonoBehaviour {
 		// get the name of the country selected
 		Sprite spr_flag = flagCollider.gameObject.GetComponent<SpriteRenderer>().sprite;
 
-		// country already selected
-		if (countriesFound.Contains(spr_flag.name))
-		{
-			// create a JSON with one value, "country" (only parameter of countryReSelected)
-			JSONNode values = JSON.Parse("{ \"country\" : \"" + spr_flag.name + "\" }");
-			// ask EngAGe to assess the action based on the config file
-			StartCoroutine(engage.assess("countryReSelected", values));
-		}
-		// country selected for the first time
-		else
-		{
-			// create a JSON with one value, "country" (only parameter of newCountrySelected)
-			JSONNode values = JSON.Parse("{ \"country\" : \"" + spr_flag.name + "\" }");
-			// ask EngAGe to assess the action based on the config file
-			StartCoroutine(engage.assess("newCountrySelected", values));
-		}
 		// save country selected
 		countriesFound.Add (spr_flag.name);
 
