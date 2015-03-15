@@ -33,10 +33,10 @@ public class LaserScript : MonoBehaviour {
 			isLaserOn = !isLaserOn;
 			
 			//4
-			collider2D.enabled = isLaserOn;
+			GetComponent<Collider2D>().enabled = isLaserOn;
 			
 			//5
-			SpriteRenderer spriteRenderer = ((SpriteRenderer)this.renderer);
+			SpriteRenderer spriteRenderer = ((SpriteRenderer)this.GetComponent<Renderer>());
 			if (isLaserOn)
 				spriteRenderer.sprite = laserOnSprite;
 			else

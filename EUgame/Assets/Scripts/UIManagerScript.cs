@@ -305,6 +305,12 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
+	public void ActionAssessed(JSONNode returned)
+	{
+		UpdateScores();
+		ReceiveFeedback();
+	}
+
 	public void ReceiveScore()
 	{
 		UpdateScores ();
