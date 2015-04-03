@@ -41,7 +41,7 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		// if the badge is in EngAGe returned list, use the active image (color badge)
 		foreach (JSONNode b in engage.getBadges())
 		{
-			if (string.Equals(b["name"], badgeName))
+			if (string.Equals(b["name"], badgeName) && b["earned"].AsBool)
 			{				
 				this.GetComponent<Image>().sprite = activeImage;
 			}

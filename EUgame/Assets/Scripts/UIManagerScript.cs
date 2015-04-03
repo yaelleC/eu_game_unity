@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 public class UIManagerScript : MonoBehaviour {
 
 	public EngAGe engage;
-	public const int idSG = 92;
+	public const int idSG = 102;
 
 	// MenuScene
 	public Animator startButton;
@@ -341,6 +341,17 @@ public class UIManagerScript : MonoBehaviour {
 				StartCoroutine (engage.endGameplay(true));
 				mouseC.winGame();
 				restartWinDialog.SetActive(true);
+			}
+			else if (string.Equals(f["type"], "ADAPTATION"))
+			{
+				if (string.Equals(f["name"], "speedGame"))
+			    {
+					mouseC.forwardMovementSpeed += 1;
+				}
+				else if (string.Equals(f["name"], "slowGame"))
+				{
+					mouseC.forwardMovementSpeed -= 1;
+				}
 			}
 		}
 	}

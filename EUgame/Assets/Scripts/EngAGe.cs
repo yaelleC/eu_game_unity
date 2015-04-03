@@ -18,6 +18,7 @@ public class EngAGe : MonoBehaviour {
 	private static JSONArray scores = new JSONArray ();
 	private static JSONArray feedback = new JSONArray ();
 	private static JSONArray badgesWon = new JSONArray();
+	private static JSONArray badges = new JSONArray();
 	private static JSONNode leaderboard = new JSONNode();
 
 	private static JSONNode seriousGame = new JSONNode();
@@ -76,6 +77,10 @@ public class EngAGe : MonoBehaviour {
 		return feedback;
 	}
 	public JSONArray getBadges()
+	{
+		return badges;
+	}
+	public JSONArray getBadgesEarned()
 	{
 		return badgesWon;
 	}
@@ -167,6 +172,8 @@ public class EngAGe : MonoBehaviour {
 		yield return www;
 
 		JSONNode loginData = JSON.Parse(www.text);
+
+		print (www.text);
 		
 		if (loginData["version"] != null)
 		{
@@ -217,18 +224,19 @@ public class EngAGe : MonoBehaviour {
 					"}";
 		}
 		print (putDataString);
-
-		string URL = baseURL + "/gameplay/start";
+		
+		string URL = baseURL + "/gameplay/startGP";
 
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(putDataString), headers);
 		
 		// wait for the requst to finish
 		yield return www;
 
-		print ("Gameplay Started! id: " + idGameplay);
+		JSONNode gpData = JSON.Parse(www.text);
+		idGameplay = gpData["idGameplay"].AsInt;
+		idPlayer = gpData["idPlayer"].AsInt;
 		
-		idGameplay = int.Parse(www.text);
-
+		print ("Gameplay Started! id: " + idGameplay);
 		print ("--- getScores ---");
 		
 		string URL2 = baseURL + "/gameplay/" + idGameplay + "/scores/";
@@ -283,12 +291,40 @@ public class EngAGe : MonoBehaviour {
 		print ("--- end Gameplay ---");
 		string winString = (win) ? "win" : "lose";
 		string URL = baseURL + "/gameplay/"+ idGameplay + "/end/" + winString;
+		print (URL);
+
+		Dictionary<string, string> headers2 = new Dictionary<string, string>();		
+		headers2.Add("Content-Type", "text/plain");
+
+		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(winString), headers2);
+
+		// wait for the requst to finish
+		yield return www;
+			
+		if (www.error != null && !www.error.Equals(""))
+		{
+			print ("Error: " + www.error);
+		}
+		else 
+		{
+			print ("Gameplay Ended! return: " + www.text );
+		}
+	}	
+	
+	public IEnumerator endGameplay(String win)
+	{
+		print ("--- end Gameplay ---");
+		string URL = baseURL + "/gameplay/"+ idGameplay + "/end/" + win;
+		print (URL);
 		
-		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(""), headers);
+		Dictionary<string, string> headers2 = new Dictionary<string, string>();		
+		headers2.Add("Content-Type", "text/plain");
+
+		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(winString), headers2);
 		
 		// wait for the requst to finish
 		yield return www;
-						
+		
 		print ("Gameplay Ended! return: " + www.text);
 	}
 
@@ -353,15 +389,16 @@ public class EngAGe : MonoBehaviour {
 	{
 		print ("--- get Badges ---");
 
-		string URL = baseURL + "/badges/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
+		string URL = baseURL + "/badges/all/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
 
 		WWW www = new WWW(URL);
 		
 		// wait for the requst to finish
 		yield return www;
 		
-		badgesWon = JSON.Parse(www.text).AsArray;
-		print ("Badges received! " + badgesWon.ToString());
+		badges = JSON.Parse(www.text).AsArray;
+
+		print ("Badges received! " + badges.ToString());
 	}
 
 	public IEnumerator getLeaderboard(int p_idSG)
