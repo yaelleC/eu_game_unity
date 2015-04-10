@@ -9,7 +9,7 @@ using SimpleJSON;
 using System;
 
 public class EngAGe : MonoBehaviour {
-		
+	
 	private static int idStudent;
 	private static int idPlayer = -1;
 	private static int version = 0;
@@ -18,15 +18,16 @@ public class EngAGe : MonoBehaviour {
 	private static JSONArray scores = new JSONArray ();
 	private static JSONArray feedback = new JSONArray ();
 	private static JSONArray badgesWon = new JSONArray();
+	private static JSONArray badges = new JSONArray();
 	private static JSONNode leaderboard = new JSONNode();
-
+	
 	private static JSONNode seriousGame = new JSONNode();
 	
 	private static string error;
 	private static int errorCode;
 	
 	private Dictionary<string, string> headers = new Dictionary<string, string>();
-
+	
 	// Use this for initialization
 	void Start () {		
 		headers.Add("Content-Type", "application/json");
@@ -36,9 +37,9 @@ public class EngAGe : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	
 	// ************* Get and Set ****************** //
-
+	
 	public int getErrorCode()
 	{
 		return errorCode;
@@ -77,6 +78,10 @@ public class EngAGe : MonoBehaviour {
 	}
 	public JSONArray getBadges()
 	{
+		return badges;
+	}
+	public JSONArray getBadgesEarned()
+	{
 		return badgesWon;
 	}
 	public JSONNode getLeaderboardList()
@@ -87,12 +92,12 @@ public class EngAGe : MonoBehaviour {
 	{
 		return seriousGame;
 	}
-
+	
 	// ************* Web services calls ****************** //
 	//private string baseURL = "http://docker:8080";
 	private string baseURL = "http://146.191.107.189:8080";
-
-
+	
+	
 	public IEnumerator loginStudent(int p_idSG, string p_username, string p_password, 
 	                                string sceneLoginFail, string sceneNoParameters, string sceneParameters)
 	{
@@ -107,12 +112,12 @@ public class EngAGe : MonoBehaviour {
 				", \"password\": \"" + p_password + "\"" +
 				"}";
 		print (postDataString);
-
+		
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(postDataString), headers);
-
+		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		JSONNode loginData = JSON.Parse(www.text);
 		
 		bool loginSuccess = loginData["loginSuccess"].AsBool;
@@ -123,7 +128,7 @@ public class EngAGe : MonoBehaviour {
 			error = "Login failed";
 			Application.LoadLevel(sceneLoginFail);
 		}
-		else if (loginData["version"] != null)
+		else
 		{
 			errorCode = 0;
 			error = "";
@@ -145,14 +150,8 @@ public class EngAGe : MonoBehaviour {
 				Application.LoadLevel(sceneParameters);
 			}
 		}
-		else
-		{
-			errorCode = 203;
-			error = "Sorry, this game is not public and you don't have access to it.";
-			Application.LoadLevel(sceneLoginFail);
-		}
 	}
-
+	
 	public IEnumerator guestLogin(int p_idSG, string sceneLoginFail, string sceneParameters)
 	{
 		print ("--- loginStudent ---");
@@ -166,14 +165,14 @@ public class EngAGe : MonoBehaviour {
 				", \"password\": \" \"" +
 				"}";
 		print (postDataString);
-
+		
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(postDataString), headers);
 		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		JSONNode loginData = JSON.Parse(www.text);
-
+		
 		print (www.text);
 		
 		if (loginData["version"] != null)
@@ -192,15 +191,15 @@ public class EngAGe : MonoBehaviour {
 			Application.LoadLevel(sceneLoginFail);
 		}				
 	}
-
+	
 	public IEnumerator startGameplay(int p_idSG, string sceneGame)
 	{
 		scores = new JSONArray ();
 		feedback = new JSONArray ();
 		seriousGame = new JSONNode();
-				
+		
 		print ("--- startGameplay ---");
-
+		
 		string putDataString = "";
 		
 		// existing player
@@ -225,37 +224,39 @@ public class EngAGe : MonoBehaviour {
 					"}";
 		}
 		print (putDataString);
-
-		string URL = baseURL + "/gameplay/start";
-
+		
+		string URL = baseURL + "/gameplay/startGP";
+		
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(putDataString), headers);
 		
 		// wait for the requst to finish
 		yield return www;
 
-		
-		idGameplay = int.Parse(www.text);
+		JSONNode gpData = JSON.Parse(www.text);
+		print (gpData);
+		idGameplay = gpData["idGameplay"].AsInt;
+		idPlayer = gpData["idPlayer"].AsInt;
 		
 		print ("Gameplay Started! id: " + idGameplay);
 		print ("--- getScores ---");
 		
 		string URL2 = baseURL + "/gameplay/" + idGameplay + "/scores/";
-
+		
 		WWW www2 = new WWW(URL2);
 		
 		// wait for the requst to finish
 		yield return www2;
-
+		
 		scores = JSON.Parse(www2.text).AsArray;
 		print ("Scores received! " + scores.ToString());
 		
 		Application.LoadLevel(sceneGame);
 	}
-
+	
 	public IEnumerator assess(string p_action, JSONNode p_values, Action<JSONNode> callback)
 	{
 		print ("--- assess action (" + p_action + ") ---");
-				
+		
 		string putDataString = 
 			"{" + 
 				"\"action\": \"" + p_action + "\"" +
@@ -263,12 +264,12 @@ public class EngAGe : MonoBehaviour {
 				"}";
 		
 		string URL = baseURL + "/gameplay/" + idGameplay + "/assessAndScore";
-				
+		
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(putDataString), headers);
 		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		JSONNode returnAssess = JSON.Parse (www.text);
 		
 		feedback = returnAssess["feedback"].AsArray;
@@ -292,15 +293,15 @@ public class EngAGe : MonoBehaviour {
 		string winString = (win) ? "win" : "lose";
 		string URL = baseURL + "/gameplay/"+ idGameplay + "/end/" + winString;
 		print (URL);
-
+		
 		Dictionary<string, string> headers2 = new Dictionary<string, string>();		
 		headers2.Add("Content-Type", "text/plain");
-
+		
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(winString), headers2);
-
+		
 		// wait for the requst to finish
 		yield return www;
-			
+		
 		if (www.error != null && !www.error.Equals(""))
 		{
 			print ("Error: " + www.error);
@@ -317,25 +318,28 @@ public class EngAGe : MonoBehaviour {
 		string URL = baseURL + "/gameplay/"+ idGameplay + "/end/" + win;
 		print (URL);
 		
-		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(win));
+		Dictionary<string, string> headers2 = new Dictionary<string, string>();		
+		headers2.Add("Content-Type", "text/plain");
+		
+		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(win), headers2);
 		
 		// wait for the requst to finish
 		yield return www;
 		
 		print ("Gameplay Ended! return: " + www.text);
 	}
-
+	
 	public IEnumerator updateScores(Action<JSONArray> callbackScore)
 	{
 		print ("--- getScores ---");
 		
 		string URL = baseURL + "/gameplay/" + idGameplay + "/scores/";
-
+		
 		WWW www = new WWW(URL);
 		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		scores = JSON.Parse(www.text).AsArray;
 		print ("Scores received! " + scores.ToString());
 		callbackScore(scores);
@@ -346,12 +350,12 @@ public class EngAGe : MonoBehaviour {
 		print ("--- update Feedback ---");
 		
 		string URL = baseURL + "/gameplay/" + idGameplay + "/feedback/";
-
+		
 		WWW www = new WWW(URL);
 		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		feedback = JSON.Parse(www.text).AsArray;
 		print ("Feedback received! " + feedback.ToString());
 		foreach (JSONNode f in feedback)
@@ -365,7 +369,7 @@ public class EngAGe : MonoBehaviour {
 		
 		callbackFeedback (feedback);
 	}
-
+	
 	public IEnumerator getGameDesc(int p_idSG)
 	{
 		print ("--- get SG ---");
@@ -376,27 +380,28 @@ public class EngAGe : MonoBehaviour {
 		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		seriousGame = JSON.Parse(www.text);
 		print ("Serious game detailed received! " + seriousGame.ToString());
 	}
-
+	
 	
 	public IEnumerator getBadgesWon(int p_idSG)
 	{
 		print ("--- get Badges ---");
-
-		string URL = baseURL + "/badges/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
-
+		
+		string URL = baseURL + "/badges/all/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
+		
 		WWW www = new WWW(URL);
 		
 		// wait for the requst to finish
 		yield return www;
 		
-		badgesWon = JSON.Parse(www.text).AsArray;
-		print ("Badges received! " + badgesWon.ToString());
+		badges = JSON.Parse(www.text).AsArray;
+		
+		print ("Badges received! " + badges.ToString());
 	}
-
+	
 	public IEnumerator getLeaderboard(int p_idSG)
 	{
 		print ("--- get Leader Board ---");
@@ -407,7 +412,7 @@ public class EngAGe : MonoBehaviour {
 		
 		// wait for the requst to finish
 		yield return www;
-
+		
 		leaderboard = JSON.Parse(www.text);
 		print ("Leader board received! " + leaderboard.ToString());
 	}

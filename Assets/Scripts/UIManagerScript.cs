@@ -6,13 +6,12 @@ using System.Net;
 using System.IO;
 using System.Text;
 using SimpleJSON;
-using System;
 using System.Text.RegularExpressions;
 
 public class UIManagerScript : MonoBehaviour {
 
 	public EngAGe engage;
-	private const int idSG = 104;
+	private const int idSG = 110;
 
 	// MenuScene
 	public Text txt_title; 
@@ -29,18 +28,11 @@ public class UIManagerScript : MonoBehaviour {
 	public GameObject leaderboardDialog;
 	public Text txt_listBestPlayers;
 
-	// LoginScene
-	public Text txtUsername;
-	public InputField txtPassword;
-	public Text txtLoginParagraph;
-	
-	private static string username;
-	private static string password;
-
 	// parameter scene
 	public Text txtWelcome;
 	public InputField inputPrefab; 
 	public GameObject inputParent; 
+	public Toggle toogleBoy;
 	private List<InputField> inputFields = new List<InputField>();
 
 	// game scene
@@ -62,6 +54,7 @@ public class UIManagerScript : MonoBehaviour {
 	public Image life3;
 
 	private static int difficulty = 2;
+	private static string ABtest;
 
 	public int getDifficulty()
 	{
@@ -70,29 +63,32 @@ public class UIManagerScript : MonoBehaviour {
 
 	void Start()
 	{
-		if (Application.loadedLevelName.Equals("LoginScene"))
+		if (Application.loadedLevelName.Equals("ParametersScene"))
 		{
-			txtLoginParagraph.enabled = (engage.getErrorCode() > 0); 
-			txtLoginParagraph.text = engage.getError();
-		}
-		else if (Application.loadedLevelName.Equals("ParametersScene"))
-		{
-			txtWelcome.text = "Welcome " + username ; 
+			txtWelcome.text = "Welcome " ; 
 			int i = 0; 
 			// loop on all the player's characteristics needed 
 			foreach (JSONNode param in engage.getParameters()) { 
-				// creates a text field in the panel parameters of the scene
-				InputField inputParam = (InputField)Instantiate(inputPrefab); 
-				inputParam.name = "input_" + param["name"]; 
-				inputParam.transform.SetParent(inputParent.transform); 
-				inputParam.text = param["question"] + " (" + param["type"] + ")"; 
 
-				// position them, aligned vertically 
-				RectTransform transform = inputParam.transform as RectTransform; 
-				transform.anchoredPosition = new Vector2(0, 20 - i*50 ); 
+				if(param["question"] != null)
+				{
+					// creates a text field in the panel parameters of the scene
+					InputField inputParam = (InputField)Instantiate(inputPrefab); 
+					inputParam.name = "input_" + param["name"]; 
+					inputParam.transform.SetParent(inputParent.transform); 
+					inputParam.text = param["question"] ; 
 
-				// save the input in the input array 
-				inputFields.Add(inputParam); i++; 
+					string paramName = "gender";
+					if (inputParam.name != "input_" + paramName)
+					{
+						print ("not gender");
+						// position them, aligned vertically 
+						RectTransform transform = inputParam.transform as RectTransform; 
+						transform.anchoredPosition = new Vector2(0, 20 - i*45 ); 
+					}
+					// save the input in the input array 
+					inputFields.Add(inputParam); i++; 
+				}
 			}
 
 		}
@@ -112,6 +108,8 @@ public class UIManagerScript : MonoBehaviour {
 			badgeDialog.SetActive (false);
 			infoDialog.SetActive (false);
 			leaderboardDialog.SetActive (false);
+
+			ToggleMenu();
 		}
 		else if (Application.loadedLevelName.Equals("GameScene"))
 		{
@@ -124,17 +122,53 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
+	public void saveGenderBoy()
+	{
+		if(toogleBoy.isOn)
+		{
+			string paramName="gender";
+			foreach (InputField inputField in inputFields) { 
+				if (inputField.name == "input_" + paramName) { 
+					// and store the value in the JSON 
+					inputField.text = "male"; 
+					return;
+				} 
+			}
+		}
+		else
+		{
+			string paramName="gender";
+			foreach (InputField inputField in inputFields) { 
+				if (inputField.name == "input_" + paramName) { 
+					// and store the value in the JSON 
+					inputField.text = "female"; 
+					return;
+				} 
+			}
+		}
+	}
+
 	public void GoToMenu()
 	{
 		// for each parameter required 
-		foreach (JSONNode param in engage.getParameters()) { 
-			// find the corresponding input field 
-			foreach (InputField inputField in inputFields) { 
-				if (inputField.name == "input_" + param["name"]) { 
-					// and store the value in the JSON 
-					param.Add("value", inputField.text); 
+		foreach (JSONNode param in engage.getParameters()) { 			
+			string abTest = "ABtest";
+
+			if (abTest.Equals(param["name"], System.StringComparison.Ordinal))
+			{
+				ABtest = (Random.value >= 0.5f)? "group1" : "group2";
+				param.Add("value", ABtest); 
+			}
+			else
+			{
+				// find the corresponding input field 
+				foreach (InputField inputField in inputFields) { 
+					if (inputField.name == "input_" + param["name"]) { 
+						// and store the value in the JSON 
+						param.Add("value", inputField.text); 
+					} 
 				} 
-			} 
+			}
 		} 
 		Application.LoadLevel("MenuScene");
 	}
@@ -142,14 +176,6 @@ public class UIManagerScript : MonoBehaviour {
 	public void StartGame()
 	{
 		StartCoroutine (engage.startGameplay(idSG, "GameScene"));
-	}
-	
-	public void GetStarted()
-	{
-		username = txtUsername.text;
-		password = txtPassword.text;
-		
-		StartCoroutine(engage.loginStudent(idSG, username, password, "LoginScene", "MenuScene", "ParametersScene"));
 	}
 
 	public void GetStartedGuest()
@@ -193,6 +219,8 @@ public class UIManagerScript : MonoBehaviour {
 	public void OpenBadges()
 	{
 		badgeDialog.SetActive (!badgeDialog.activeSelf);
+		CloseLeaderboard ();
+		CloseInfo ();
 	}
 	
 	public void CloseBadges()
@@ -211,6 +239,8 @@ public class UIManagerScript : MonoBehaviour {
 
 		// open the window 
 		infoDialog.SetActive (!infoDialog.activeSelf);
+		CloseLeaderboard ();
+		CloseBadges ();
 	}
 	
 	public void CloseInfo()
@@ -239,6 +269,8 @@ public class UIManagerScript : MonoBehaviour {
 		}
 		// open the window
 		leaderboardDialog.SetActive (!leaderboardDialog.activeSelf);
+		CloseInfo ();
+		CloseBadges ();
 	}
 	
 	public void CloseLeaderboard()
@@ -303,20 +335,20 @@ public class UIManagerScript : MonoBehaviour {
 		foreach (JSONNode score in engage.getScores())
 		{
 			string scoreName = score["name"];
-			string scoreValue = score["value"];
+			float scoreValue = float.Parse(score["value"]);
 			
 			if (string.Equals(scoreName, "eu_score"))
 			{
-				pointsLabel.text = float.Parse(scoreValue).ToString();
+				pointsLabel.text = scoreValue.ToString();
 			}
 			else if (string.Equals(scoreName, "eu_countries"))
 			{
-				euLabel.text = float.Parse(scoreValue).ToString();
+				scoreValue = (ABtest.Equals("group1", System.StringComparison.Ordinal))? 28-scoreValue : scoreValue;
+				euLabel.text = scoreValue.ToString();
 			}
 			else if (string.Equals(scoreName, "lives"))
 			{
-				float livesFloat = float.Parse(scoreValue);
-				int lives = Mathf.RoundToInt(livesFloat);
+				int lives = Mathf.RoundToInt(scoreValue);
 				
 				life3.gameObject.SetActive(lives > 2);
 				life2.gameObject.SetActive(lives > 1);
