@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 public class UIManagerScript : MonoBehaviour {
 
 	public EngAGe engage;
-	private const int idSG = 110;
+	private const int idSG = 113;
 
 	// MenuScene
 	public Text txt_title; 
@@ -70,25 +70,26 @@ public class UIManagerScript : MonoBehaviour {
 			// loop on all the player's characteristics needed 
 			foreach (JSONNode param in engage.getParameters()) { 
 
-				if(param["question"] != null)
-				{
-					// creates a text field in the panel parameters of the scene
-					InputField inputParam = (InputField)Instantiate(inputPrefab); 
-					inputParam.name = "input_" + param["name"]; 
-					inputParam.transform.SetParent(inputParent.transform); 
-					inputParam.text = param["question"] ; 
+				// creates a text field in the panel parameters of the scene
+				InputField inputParam = (InputField)Instantiate(inputPrefab); 
+				inputParam.name = "input_" + param["name"]; 
+				inputParam.transform.SetParent(inputParent.transform); 
 
-					string paramName = "gender";
-					if (inputParam.name != "input_" + paramName)
-					{
-						print ("not gender");
-						// position them, aligned vertically 
-						RectTransform transform = inputParam.transform as RectTransform; 
-						transform.anchoredPosition = new Vector2(0, 20 - i*45 ); 
-					}
-					// save the input in the input array 
-					inputFields.Add(inputParam); i++; 
+				inputParam.text = param["question"] + "" ; 
+
+				if (!string.Equals(inputParam.name, "input_gender") && param["question"] != null)
+				{
+					// position them, aligned vertically 
+					RectTransform transform = inputParam.transform as RectTransform; 
+					transform.anchoredPosition = new Vector2(0, 20 - i*45 ); 
 				}
+				if (string.Equals(param["name"], "ABtest"))
+				{
+					ABtest = (Random.value >= 0.5f)? "group1" : "group2";
+					inputParam.text = ABtest; 
+				}
+				// save the input in the input array 
+				inputFields.Add(inputParam); i++; 
 			}
 
 		}
@@ -154,21 +155,13 @@ public class UIManagerScript : MonoBehaviour {
 		foreach (JSONNode param in engage.getParameters()) { 			
 			string abTest = "ABtest";
 
-			if (abTest.Equals(param["name"], System.StringComparison.Ordinal))
-			{
-				ABtest = (Random.value >= 0.5f)? "group1" : "group2";
-				param.Add("value", ABtest); 
-			}
-			else
-			{
-				// find the corresponding input field 
-				foreach (InputField inputField in inputFields) { 
-					if (inputField.name == "input_" + param["name"]) { 
-						// and store the value in the JSON 
-						param.Add("value", inputField.text); 
-					} 
+			// find the corresponding input field 
+			foreach (InputField inputField in inputFields) { 
+				if (inputField.name == "input_" + param["name"]) { 
+					// and store the value in the JSON 
+					param.Add("value", inputField.text); 
 				} 
-			}
+			} 
 		} 
 		Application.LoadLevel("MenuScene");
 	}
@@ -319,11 +312,11 @@ public class UIManagerScript : MonoBehaviour {
 			{
 				if (string.Equals(f["name"], "speedGame"))
 				{
-					mouseC.forwardMovementSpeed += 1;
+					mouseC.forwardMovementSpeed += 1.5f;
 				}
 				else if (string.Equals(f["name"], "slowGame"))
 				{
-					mouseC.forwardMovementSpeed -= 1;
+					mouseC.forwardMovementSpeed -= 0.5f;
 				}
 			}
 		}
