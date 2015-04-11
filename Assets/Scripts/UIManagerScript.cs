@@ -152,9 +152,8 @@ public class UIManagerScript : MonoBehaviour {
 	public void GoToMenu()
 	{
 		// for each parameter required 
-		foreach (JSONNode param in engage.getParameters()) { 			
-			string abTest = "ABtest";
-
+		foreach (JSONNode param in engage.getParameters()) 
+		{ 	
 			// find the corresponding input field 
 			foreach (InputField inputField in inputFields) { 
 				if (inputField.name == "input_" + param["name"]) { 
