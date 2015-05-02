@@ -77,6 +77,11 @@ public class MouseController : MonoBehaviour {
 
 	void FixedUpdate () 
 	{
+		if (Input.GetKeyDown(KeyCode.Escape)) 
+		{ 
+			uiScript.GoToMenu();
+		}
+
 		bool jetpackActive = Input.GetButton("Fire1");
 		jetpackActive = jetpackActive && !endLose && !endWin;
 

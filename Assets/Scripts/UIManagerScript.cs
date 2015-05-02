@@ -110,7 +110,7 @@ public class UIManagerScript : MonoBehaviour {
 			infoDialog.SetActive (false);
 			leaderboardDialog.SetActive (false);
 
-			ToggleMenu();
+			//ToggleMenu();
 		}
 		else if (Application.loadedLevelName.Equals("GameScene"))
 		{
@@ -163,6 +163,11 @@ public class UIManagerScript : MonoBehaviour {
 			} 
 		} 
 		Application.LoadLevel("MenuScene");
+	}
+
+	public void QuitGame()
+	{
+		Application.Quit();
 	}
 	
 	public void StartGame()
