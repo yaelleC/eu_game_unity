@@ -14,7 +14,7 @@ public class EngAGe : MonoBehaviour {
 	private static int idPlayer = -1;
 	private static int version = 0;
 	private static int idGameplay;
-	private static JSONArray parameters;
+	private static JSONArray parameters = new JSONArray();
 	private static JSONArray scores = new JSONArray ();
 	private static JSONArray feedback = new JSONArray ();
 	private static JSONArray badgesWon = new JSONArray();
@@ -31,6 +31,9 @@ public class EngAGe : MonoBehaviour {
 	// Use this for initialization
 	void Start () {		
 		headers.Add("Content-Type", "application/json");
+		idStudent = PlayerPrefs.GetInt ("idStudent");
+		idPlayer = PlayerPrefs.GetInt ("idPlayer", -1);
+		version = PlayerPrefs.GetInt ("version", 0);
 	}
 	
 	// Update is called once per frame
@@ -237,6 +240,11 @@ public class EngAGe : MonoBehaviour {
 		idGameplay = gpData["idGameplay"].AsInt;
 		idPlayer = gpData["idPlayer"].AsInt;
 		
+		PlayerPrefs.SetInt ("idStudent", idStudent);
+		PlayerPrefs.SetInt ("idPlayer", idPlayer);
+		PlayerPrefs.SetInt ("version", version);
+		PlayerPrefs.Save ();
+		
 		print ("Gameplay Started! id: " + idGameplay);
 		print ("--- getScores ---");
 		
@@ -282,8 +290,7 @@ public class EngAGe : MonoBehaviour {
 			{
 				badgesWon.Add(f);
 			}	
-		}
-		
+		}		
 		callback (returnAssess);
 	}
 	

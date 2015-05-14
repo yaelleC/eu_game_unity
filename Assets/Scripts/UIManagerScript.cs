@@ -87,6 +87,8 @@ public class UIManagerScript : MonoBehaviour {
 				{
 					ABtest = (Random.value >= 0.5f)? "group1" : "group2";
 					inputParam.text = ABtest; 
+					PlayerPrefs.SetString("ABtest", ABtest);
+					PlayerPrefs.Save();
 				}
 				// save the input in the input array 
 				inputFields.Add(inputParam); i++; 
@@ -158,9 +160,20 @@ public class UIManagerScript : MonoBehaviour {
 			foreach (InputField inputField in inputFields) { 
 				if (inputField.name == "input_" + param["name"]) { 
 					// and store the value in the JSON 
-					param.Add("value", inputField.text); 
+					if (string.Equals(param["name"], "age"))
+					{
+						int age = 0;
+						int.TryParse(inputField.text, out age);
+						
+						param.Add("value", age.ToString()); 
+					}
+					else
+					{
+						param.Add("value", inputField.text); 
+					}
 				} 
 			} 
+			print(param);
 		} 
 		Application.LoadLevel("MenuScene");
 	}
@@ -177,7 +190,12 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void GetStartedGuest()
 	{
-		StartCoroutine(engage.guestLogin(idSG, "LoginScene", "ParametersScene"));
+		// existing player
+		if (engage.getIdPlayer() != -1) {	
+			Application.LoadLevel("MenuScene");
+		} else {
+			StartCoroutine (engage.guestLogin (idSG, "LoginScene", "ParametersScene"));
+		}
 	}
 
 	public void OpenSettings()
@@ -340,6 +358,7 @@ public class UIManagerScript : MonoBehaviour {
 			}
 			else if (string.Equals(scoreName, "eu_countries"))
 			{
+				ABtest = PlayerPrefs.GetString("ABtest", "group1");
 				scoreValue = (ABtest.Equals("group1", System.StringComparison.Ordinal))? 28-scoreValue : scoreValue;
 				euLabel.text = scoreValue.ToString();
 			}
