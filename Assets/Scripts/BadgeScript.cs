@@ -41,13 +41,22 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		
 		// get name of the badge represented
 		string badgeName = this.name.Replace ("img_badge_", "");
+
+		string desc = "description not available";
 		
 		// update the description to the message defined in the config file
 		// if no message is found the tooltip will display default message
-		string desc = "description not available";
-		if ((sg ["feedback"] != null) && (sg ["feedback"][badgeName] != null)) 
+		foreach (JSONNode b in engage.getBadges())
 		{
-			desc = sg ["feedback"] [badgeName] ["message"];
+			if (string.Equals(b["name"], badgeName))
+			{				
+				desc = b["message"] + "\n ( " +b["playerNum"].AsFloat+ "/" +b["goalNum"]+ " )";
+			}
+		}
+		if (engage.getBadges().Count == 0) {
+			if ((sg ["feedback"] != null) && (sg ["feedback"] [badgeName] != null)) {
+				desc = sg ["feedback"] [badgeName] ["message"];
+			}
 		}
 		showToolTip (data.position, desc);
 	}

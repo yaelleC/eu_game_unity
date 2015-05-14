@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 public class UIManagerScript : MonoBehaviour {
 
 	public EngAGe engage;
-	private const int idSG = 104;
+	private const int idSG = 126;
 
 	// MenuScene
 	public Text txt_title; 
@@ -60,6 +60,8 @@ public class UIManagerScript : MonoBehaviour {
 	public Image life1;
 	public Image life2;
 	public Image life3;
+	public Image life4;
+	public Image life5;
 
 	private static int difficulty = 2;
 
@@ -318,6 +320,8 @@ public class UIManagerScript : MonoBehaviour {
 				float livesFloat = float.Parse(scoreValue);
 				int lives = Mathf.RoundToInt(livesFloat);
 				
+				life5.gameObject.SetActive(lives > 4);
+				life4.gameObject.SetActive(lives > 3);
 				life3.gameObject.SetActive(lives > 2);
 				life2.gameObject.SetActive(lives > 1);
 				life1.gameObject.SetActive(lives > 0);

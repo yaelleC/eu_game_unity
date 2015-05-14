@@ -18,6 +18,7 @@ public class EngAGe : MonoBehaviour {
 	private static JSONArray scores = new JSONArray ();
 	private static JSONArray feedback = new JSONArray ();
 	private static JSONArray badgesWon = new JSONArray();
+	private static JSONArray badges = new JSONArray();
 	private static JSONNode leaderboard = new JSONNode();
 
 	private static JSONNode seriousGame = new JSONNode();
@@ -75,9 +76,13 @@ public class EngAGe : MonoBehaviour {
 	{
 		return feedback;
 	}
-	public JSONArray getBadges()
+	public JSONArray getBadgesEarned()
 	{
 		return badgesWon;
+	}
+	public JSONArray getBadges()
+	{
+		return badges;
 	}
 	public JSONNode getLeaderboardList()
 	{
@@ -385,16 +390,17 @@ public class EngAGe : MonoBehaviour {
 	public IEnumerator getBadgesWon(int p_idSG)
 	{
 		print ("--- get Badges ---");
-
-		string URL = baseURL + "/badges/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
-
+		
+		string URL = baseURL + "/badges/all/seriousgame/" + p_idSG + "/version/" + version + "/player/" + idPlayer;
+		
 		WWW www = new WWW(URL);
 		
 		// wait for the requst to finish
 		yield return www;
 		
-		badgesWon = JSON.Parse(www.text).AsArray;
-		print ("Badges received! " + badgesWon.ToString());
+		badges = JSON.Parse(www.text).AsArray;
+		
+		print ("Badges received! " + badges.ToString());
 	}
 
 	public IEnumerator getLeaderboard(int p_idSG)
