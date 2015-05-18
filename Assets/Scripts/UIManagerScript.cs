@@ -63,7 +63,7 @@ public class UIManagerScript : MonoBehaviour {
 	public Image life4;
 	public Image life5;
 
-	private static int difficulty = 2;
+	private static int difficulty = 1;
 
 	public int getDifficulty()
 	{
@@ -170,9 +170,9 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void CloseSettings()
 	{
+		dialog.SetBool("isHidden", true);
 		startButton.SetBool("isHidden", false);
 		settingsButton.SetBool("isHidden", false);
-		dialog.SetBool("isHidden", true);
 	}
 
 	public void SetDifficulty()

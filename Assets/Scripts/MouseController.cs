@@ -59,7 +59,7 @@ public class MouseController : MonoBehaviour {
 			// create a JSON with key/value "country" (only parameter in config file)
 			JSONNode vals = JSON.Parse("{\"country\" : \"" + spr_flag.name + "\" }");
 			// ask EngAGe to assess the action based on the config file
-			StartCoroutine(engage.assess("countryReSelected", vals, 
+			StartCoroutine(engage.assess("countrySelectedAgain", vals, 
 			                             uiScript.ActionAssessed));
 		}
 		// country selected for the first time
