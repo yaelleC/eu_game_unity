@@ -126,6 +126,11 @@ public class UIManagerScript : MonoBehaviour {
 		}
 	}
 
+	public void Update() {
+		if (Input.GetKeyDown("escape")) 
+			Application.Quit();
+	}
+
 	public void GoToMenu()
 	{
 		// for each parameter required 
