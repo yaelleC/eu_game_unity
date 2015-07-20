@@ -1,6 +1,6 @@
 Serious-game
    SGname : "EU mouse"
-   SGdeveloper : 1
+   SGdeveloper : 404
    SGdesc : "This is a mini serious game that teaches you to identify countries part of the European Union"
    SGageRange : 10-99
    SGlanguage : EN
@@ -23,8 +23,11 @@ Learning-outcomes
 End
 
 Feedback-messages
-  correct_country "Well done, [country] is indeed part of the EU" positive
-  wrong_country "Nope, [country] is not part of the EU" negative
+  correctEU  "Well done, [country] is indeed part of the EU" positive
+  wrongEU "Nope, [country] is not part of the EU" negative
+  
+  endWin "Well done, you won the game :)" win
+  endLose "Sorry, you lost the game :(" lose
   
   gold_medal "You found 200 EU countries" badge
   silver_medal "You found 100 EU countries" badge
@@ -36,9 +39,6 @@ Feedback-messages
   
   effort "You played 10+ times" badge  
   performance "You won 10+ times" badge
-  
-  end_win "Well done, you won the game :)" win
-  end_lose "Sorry, you lost the game :(" lose
   
   speedGame "You're too good, let's make things more challenging" adaptation
   slowGame "Hey, let's slow things down a bit" adaptation
@@ -83,8 +83,8 @@ Evidence-model
     End
     
     When 
-        any(+) : correct_country
-        others : wrong_country
+        any(+) : correctEU
+        others : wrongEU
     End
   End
   
@@ -126,15 +126,15 @@ Evidence-model
     End
     
     When 
-        any(+) : correct_country
-        any(-) : wrong_country
+        any(+) : correctEU
+        any(-) : wrongEU
     End
   End
 End
 
 Feedback-model
-  eu_countries < 1 : end_win immediate
-  lives < 1 : end_lose immediate
+  eu_countries < 1 : endWin 
+  lives < 1 : endLose 
   eu_countries <  6 : speedGame 
   lives <  2 : slowGame 
 End
