@@ -112,8 +112,10 @@ public class EngAGe : MonoBehaviour {
 				", \"password\": \"" + p_password + "\"" +
 				"}";
 		print (postDataString);
-
+		
 		WWW www = new WWW(URL, Encoding.UTF8.GetBytes(postDataString), headers);
+
+		//WWW www = new WWW(URL, System.Text.UTF8Encoding() (postDataString), headers);
 
 		// wait for the requst to finish
 		yield return www;
