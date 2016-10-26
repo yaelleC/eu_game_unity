@@ -93,9 +93,8 @@ public class EngAGe : MonoBehaviour {
 		return seriousGame;
 	}
 
-	// ************* Web services calls ****************** //
-	//private string baseURL = "http://docker:8080";
-	private string baseURL = "http://146.191.107.189:8080";
+    // ************* Web services calls ****************** //
+    private string baseURL = "http://engageaws.yaellechaudy.com:8080";
 
 
 	public IEnumerator loginStudent(int p_idSG, string p_username, string p_password, 
