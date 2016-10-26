@@ -11,8 +11,9 @@ using System.Text.RegularExpressions;
 
 public class UIManagerScript : MonoBehaviour {
 
-	public EngAGe engage;
-	private const int idSG = 126;
+    public EngAGe engage;
+    public EngageOffline engageOffline;
+    private const int idSG = 126;
 
 	// MenuScene
 	public Text txt_title; 
@@ -200,6 +201,11 @@ public class UIManagerScript : MonoBehaviour {
 	public void OpenBadges()
 	{
 		badgeDialog.SetActive (!badgeDialog.activeSelf);
+
+		if (badgeDialog.activeSelf) {
+			leaderboardDialog.SetActive (false);
+			infoDialog.SetActive (false);
+		}
 	}
 	
 	public void CloseBadges()
@@ -218,6 +224,11 @@ public class UIManagerScript : MonoBehaviour {
 
 		// open the window 
 		infoDialog.SetActive (!infoDialog.activeSelf);
+
+		if (infoDialog.activeSelf) {
+			badgeDialog.SetActive (false);
+			leaderboardDialog.SetActive (false);
+		}
 	}
 	
 	public void CloseInfo()
@@ -246,6 +257,11 @@ public class UIManagerScript : MonoBehaviour {
 		}
 		// open the window
 		leaderboardDialog.SetActive (!leaderboardDialog.activeSelf);
+
+		if (leaderboardDialog.activeSelf) {
+			badgeDialog.SetActive (false);
+			infoDialog.SetActive (false);
+		}
 	}
 	
 	public void CloseLeaderboard()
