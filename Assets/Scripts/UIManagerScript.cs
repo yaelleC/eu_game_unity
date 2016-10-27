@@ -11,8 +11,10 @@ using System.Text.RegularExpressions;
 
 public class UIManagerScript : MonoBehaviour {
 
-	public EngAGe engage;
-	private const int idSG = 126;
+    public EngAGe engage;
+    public EngageOffline engageOffline;
+
+    private const int idSG = 126;
 
 	// MenuScene
 	public Text txt_title; 
