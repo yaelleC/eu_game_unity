@@ -9,6 +9,8 @@ using SimpleJSON;
 using System;
 
 public class EngAGe : MonoBehaviour {
+	
+	static public EngAGe E;
 		
 	private static int idStudent;
 	private static int idPlayer = -1;
@@ -27,6 +29,10 @@ public class EngAGe : MonoBehaviour {
 	
 	private Dictionary<string, string> headers = new Dictionary<string, string>();
 
+	void Awake() {
+		E = this;
+	}
+	
 	// Use this for initialization
 	void Start () {		
 		headers.Add("Content-Type", "application/json");
@@ -90,7 +96,7 @@ public class EngAGe : MonoBehaviour {
 
 	// ************* Web services calls ****************** //
 	//private string baseURL = "http://docker:8080";
-	private string baseURL = "http://146.191.107.189:8080";
+	private string baseURL = "http://engage.yaellechaudy.com:8080";
 
 
 	public IEnumerator loginStudent(int p_idSG, string p_username, string p_password, 
