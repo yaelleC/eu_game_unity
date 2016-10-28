@@ -11,8 +11,8 @@ using System.Text.RegularExpressions;
 
 public class UIManagerScript : MonoBehaviour {
 
-	public EngAGe engage;
-	private const int idSG = 104;
+    public EngAGe engage;
+    private const int idSG = 104;
 
 	// MenuScene
 	public Text txt_title; 
@@ -72,15 +72,26 @@ public class UIManagerScript : MonoBehaviour {
 	{
 		if (Application.loadedLevelName.Equals("LoginScene"))
 		{
-			txtLoginParagraph.enabled = (engage.getErrorCode() > 0); 
-			txtLoginParagraph.text = engage.getError();
+            if (EngAGe.E.getIdPlayer() > 0)
+            {
+                username = EngAGe.E.getUsername();
+                Application.LoadLevel("MenuScene");
+            }
+            else if (EngAGe.E.getIdStudent() > 0)
+            {
+                username = EngAGe.E.getUsername();
+                Application.LoadLevel("ParametersScene");
+            }
+
+            txtLoginParagraph.enabled = (EngAGe.E.getErrorCode() > 0); 
+			txtLoginParagraph.text = EngAGe.E.getError();
 		}
 		else if (Application.loadedLevelName.Equals("ParametersScene"))
 		{
 			txtWelcome.text = "Welcome " + username ; 
 			int i = 0; 
 			// loop on all the player's characteristics needed 
-			foreach (JSONNode param in engage.getParameters()) { 
+			foreach (JSONNode param in EngAGe.E.getParameters()) { 
 				// creates a text field in the panel parameters of the scene
 				InputField inputParam = (InputField)Instantiate(inputPrefab); 
 				inputParam.name = "input_" + param["name"]; 
@@ -98,10 +109,10 @@ public class UIManagerScript : MonoBehaviour {
 		}
 		else if (Application.loadedLevelName.Equals("MenuScene"))
 		{
-			// retrieve EngAGe data about the game 
-			StartCoroutine(engage.getGameDesc(idSG));
-			StartCoroutine(engage.getBadgesWon(idSG));
-			StartCoroutine(engage.getLeaderboard(idSG));
+			// retrieve EngAGe.E data about the game 
+			StartCoroutine(EngAGe.E.getGameDesc(idSG));
+			StartCoroutine(EngAGe.E.getBadgesWon(idSG));
+			StartCoroutine(EngAGe.E.getLeaderboard(idSG));
 
 			RectTransform transform = contentPanel.gameObject.transform as RectTransform;        
 			Vector2 position = transform.anchoredPosition;
@@ -127,7 +138,7 @@ public class UIManagerScript : MonoBehaviour {
 	public void GoToMenu()
 	{
 		// for each parameter required 
-		foreach (JSONNode param in engage.getParameters()) { 
+		foreach (JSONNode param in EngAGe.E.getParameters()) { 
 			// find the corresponding input field 
 			foreach (InputField inputField in inputFields) { 
 				if (inputField.name == "input_" + param["name"]) { 
@@ -141,20 +152,21 @@ public class UIManagerScript : MonoBehaviour {
 	
 	public void StartGame()
 	{
-		StartCoroutine (engage.startGameplay(idSG, "GameScene"));
+		StartCoroutine (EngAGe.E.startGameplay(idSG, "GameScene"));
 	}
 	
 	public void GetStarted()
 	{
 		username = txtUsername.text;
 		password = txtPassword.text;
-		
-		StartCoroutine(engage.loginStudent(idSG, username, password, "LoginScene", "MenuScene", "ParametersScene"));
+
+        //EngAGe.E.LoadConfigAndLogsFiles();
+		StartCoroutine(EngAGe.E.loginStudent(idSG, username, password, "LoginScene", "MenuScene", "ParametersScene"));
 	}
 
 	public void GetStartedGuest()
 	{
-		StartCoroutine(engage.guestLogin(idSG, "LoginScene", "ParametersScene"));
+		StartCoroutine(EngAGe.E.guestLogin(idSG, "LoginScene", "ParametersScene"));
 	}
 
 	public void OpenSettings()
@@ -202,8 +214,8 @@ public class UIManagerScript : MonoBehaviour {
 	
 	public void OpenInfo()
 	{
-		// get the seriousGame object from engage 
-		JSONNode SGdesc = engage.getSG () ["seriousGame"]; 
+		// get the seriousGame object from EngAGe.E 
+		JSONNode SGdesc = EngAGe.E.getSG () ["seriousGame"]; 
 
 		// display the title and description 
 		txt_title.text = SGdesc["name"]; 
@@ -219,8 +231,8 @@ public class UIManagerScript : MonoBehaviour {
 	}
 	public void OpenLeaderboard()
 	{
-		// get the leaderboard object from engage
-		JSONNode leaderboard = engage.getLeaderboardList ();
+		// get the leaderboard object from EngAGe.E
+		JSONNode leaderboard = EngAGe.E.getLeaderboardList ();
 		
 		// look only at the eu_score 
 		JSONArray euScorePerf = leaderboard ["eu_score"].AsArray;
@@ -267,8 +279,8 @@ public class UIManagerScript : MonoBehaviour {
 			// trigger end of game?
 			if (string.Equals(f["final"], "lose"))
 			{
-				// tell EngAGe it’s the end of the game (lost)
-				StartCoroutine (engage.endGameplay(false));
+				// tell EngAGe.E it’s the end of the game (lost)
+				StartCoroutine (EngAGe.E.endGameplay(false));
 				// tell the mouse it lost the game 
 				mouseC.loseGame();
 				// open a dialog window to go to menu or restart game
@@ -276,8 +288,8 @@ public class UIManagerScript : MonoBehaviour {
 			}
 			else if (string.Equals(f["final"], "win"))
 			{
-				// tell EngAGe it’s the end of the game (won)
-				StartCoroutine (engage.endGameplay(true));
+				// tell EngAGe.E it’s the end of the game (won)
+				StartCoroutine (EngAGe.E.endGameplay(true));
 				// tell the mouse it won the game 
 				mouseC.winGame();
 				// open a dialog window to go to menu or restart game
@@ -300,7 +312,7 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void UpdateScores()
 	{	
-		foreach (JSONNode score in engage.getScores())
+		foreach (JSONNode score in EngAGe.E.getScores())
 		{
 			string scoreName = score["name"];
 			string scoreValue = score["value"];
