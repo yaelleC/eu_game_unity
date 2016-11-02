@@ -146,6 +146,12 @@ public class UIManagerScript : MonoBehaviour {
     }
 
 
+    public void Logout()
+    {
+        EngAGe.E.logOut();
+        Application.LoadLevel("LoginScene");
+    }
+
 	public void GoToMenu()
 	{
 		// for each parameter required 

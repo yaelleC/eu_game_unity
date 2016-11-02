@@ -386,6 +386,7 @@ public class EngAGe : MonoBehaviour
     public void logOut()
     {
         logs.player = new Player();
+        SaveLogs();
     }
 
     public void SaveParameters()
