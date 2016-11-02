@@ -170,8 +170,9 @@ public class UIManagerScript : MonoBehaviour {
 	
 	public void StartGame()
 	{
-		StartCoroutine (EngAGe.E.startGameplay(idSG, "GameScene"));
-	}
+        EngAGe.E.testConnectionAndStartGameplay(idSG, "GameScene");
+        //StartCoroutine (EngAGe.E.startGameplay(idSG, "GameScene"));
+    }
 	
 	public void GetStarted()
 	{

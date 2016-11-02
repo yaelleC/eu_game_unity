@@ -115,6 +115,7 @@ public class EngAGe : MonoBehaviour
 
     public IEnumerator testConnection(Action<bool, JSONNode> action, JSONNode parameters)
     {
+        print("******** testConnection ************* ");
         string URL = baseURL + "/seriousgame/113/version/" + version;
         WWW www = new WWW(URL);
 
@@ -123,6 +124,7 @@ public class EngAGe : MonoBehaviour
 
         if (www.error != null)
         {
+            print("error connecting");
             action(false, parameters);
         }
         else
@@ -130,10 +132,12 @@ public class EngAGe : MonoBehaviour
             JSONNode game = JSON.Parse(www.text);
             if (game["seriousGame"] != null)
             {
+                print("internet connection available");
                 action(true, parameters);
             }
             else
             {
+                print("error in item recieved");
                 action(false, parameters);
             }
         }
@@ -199,6 +203,8 @@ public class EngAGe : MonoBehaviour
     public void testConnectionAndLoginStudent(int p_idSG, string p_username, string p_password,
                                         string sceneLoginFail, string sceneNoParameters, string sceneParameters)
     {
+
+        print("******** testConnectionAndLoginStudent ************* ");
         string loginDataString = 
                 "{" +
                     "\"idSG\": " + p_idSG +
@@ -557,65 +563,71 @@ public class EngAGe : MonoBehaviour
         print("Leader board received! " + leaderboard.ToString());
     }
 
-    // ************* Get and Set ****************** //
 
-    public int getErrorCode()
+    // ************* During gameplay ****************** //
+
+    public void testConnectionAndStartGameplay(int p_idSG, string sceneGame)
     {
-        return errorCode;
-    }
-    public string getError()
-    {
-        return error;
-    }
-    public int getIdStudent()
-    {
-        return (logs.player != null) ? logs.player.idStudent : -1;
-    }
-    public int getIdPlayer()
-    {
-        return (logs.player != null) ? logs.player.idPlayer : -1;
-    }
-    public string getUsername()
-    {
-        return (logs.player != null) ? logs.player.username : "";
-    }
-    public int getVersion()
-    {
-        return (logs.player != null) ? logs.player.version : 0;
-    }
-    public int getIdGameplay()
-    {
-        return idGameplay;
-    }
-    public JSONArray getParameters()
-    {
-        return parameters;
-    }
-    public JSONArray getScores()
-    {
-        return scores;
-    }
-    public JSONArray getFeedback()
-    {
-        return feedback;
-    }
-    public JSONArray getBadges()
-    {
-        return badgesWon;
-    }
-    public JSONNode getLeaderboardList()
-    {
-        return leaderboard;
-    }
-    public JSONNode getSG()
-    {
-        return seriousGame;
+        print("******** testConnectionAndStartGameplay ************* ");
+        string startGPDataString =
+               "{" +
+                   "\"idSG\": " + p_idSG +
+                   ", \"sceneGame\": " + sceneGame +
+                   "}";
+
+        print(startGPDataString);
+
+        JSONNode startGPData = JSON.Parse(startGPDataString);
+
+        StartCoroutine(testConnection(startGameplay, startGPData));
     }
 
-    // ************* Web services calls ****************** //
+    private void startGameplay (bool internetAccess, JSONNode startGPData)
+    {
+        if (internetAccess)
+        {
+            StartCoroutine(startGameplayOnline(startGPData["idSG"].AsInt, startGPData["sceneGame"]));
+        }
+        else
+        {
+            errorCode = 200;
+            error = "No internet connection available";
+            print("No internet connection available - startGameplay");
 
+            // create a new offline gameplay
+            Gameplay gp = new Gameplay();
+            // set its id (convention = for an offline gameplay id its negative position in the gameplays array)
+            gp.idGP = (logs.gameplays.Count+1) * -1;
+            gp.player = logs.player;
 
-    public IEnumerator startGameplay(int p_idSG, string sceneGame)
+            logs.gameplays.Add(gp);
+
+            print("logs: " + logs.SaveToString());
+
+            // saves idGP for engage.cs
+            idGameplay = gp.idGP;
+
+            print("Gameplay Started! id: " + idGameplay);
+
+            // get score startings values from config file
+            print("--- getScores ---");
+
+            if (logs.player.version != 0 && logs.configFile != null && JSON.Parse(logs.configFile)["learningOutcomes"] != null)
+            {
+                scores = JSON.Parse(JSON.Parse(logs.configFile)["learningOutcomes"]).AsArray;
+            }
+            else
+            {
+                scores = JSON.Parse(engageConfig_v0["learningOutcomes"]).AsArray;
+            }
+            
+            print("Scores received! " + scores.ToString());
+
+            Application.LoadLevel(startGPData["sceneGame"]);
+        }
+    }
+
+    public IEnumerator startGameplayOnline(int p_idSG, string sceneGame)
     {
         scores = new JSONArray();
         feedback = new JSONArray();
@@ -655,7 +667,7 @@ public class EngAGe : MonoBehaviour
         // wait for the requst to finish
         yield return www;
 
-
+        print(www.text);
         idGameplay = int.Parse(www.text);
 
         print("Gameplay Started! id: " + idGameplay);
@@ -786,6 +798,62 @@ public class EngAGe : MonoBehaviour
         }
 
         callbackFeedback(feedback);
+    }
+
+
+    // ************* Get and Set ****************** //
+
+    public int getErrorCode()
+    {
+        return errorCode;
+    }
+    public string getError()
+    {
+        return error;
+    }
+    public int getIdStudent()
+    {
+        return (logs.player != null) ? logs.player.idStudent : -1;
+    }
+    public int getIdPlayer()
+    {
+        return (logs.player != null) ? logs.player.idPlayer : -1;
+    }
+    public string getUsername()
+    {
+        return (logs.player != null) ? logs.player.username : "";
+    }
+    public int getVersion()
+    {
+        return (logs.player != null) ? logs.player.version : 0;
+    }
+    public int getIdGameplay()
+    {
+        return idGameplay;
+    }
+    public JSONArray getParameters()
+    {
+        return parameters;
+    }
+    public JSONArray getScores()
+    {
+        return scores;
+    }
+    public JSONArray getFeedback()
+    {
+        return feedback;
+    }
+    public JSONArray getBadges()
+    {
+        return badgesWon;
+    }
+    public JSONNode getLeaderboardList()
+    {
+        return leaderboard;
+    }
+    public JSONNode getSG()
+    {
+        return seriousGame;
     }
 }
 
