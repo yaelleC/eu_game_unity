@@ -27,10 +27,11 @@ public class UIManagerScript : MonoBehaviour {
 	public GameObject badgeDialog;
 	public GameObject infoDialog;
 	public GameObject leaderboardDialog;
-	public Text txt_listBestPlayers;
+    public Text txt_listBestPlayers;
+    public GameObject pnl_error_connection;
 
-	// LoginScene
-	public Text txtUsername;
+    // LoginScene
+    public Text txtUsername;
 	public InputField txtPassword;
 	public Text txtLoginParagraph;
 	
@@ -72,15 +73,19 @@ public class UIManagerScript : MonoBehaviour {
 	{
 		if (Application.loadedLevelName.Equals("LoginScene"))
 		{
-            if (EngAGe.E.getIdPlayer() > 0)
+            // if the player already logged in, save username and 
+            // if questions are needed, ask them, otherwise load menuScene
+            if (EngAGe.E.playerIsKnown())
             {
                 username = EngAGe.E.getUsername();
-                Application.LoadLevel("MenuScene");
-            }
-            else if (EngAGe.E.getIdStudent() > 0)
-            {
-                username = EngAGe.E.getUsername();
-                Application.LoadLevel("ParametersScene");
+
+                if (EngAGe.E.QuestionsNeeded())
+                {
+                    Application.LoadLevel("ParametersScene");
+                }
+                else {
+                    Application.LoadLevel("MenuScene");
+                }
             }
 
             txtLoginParagraph.enabled = (EngAGe.E.getErrorCode() > 0); 
@@ -109,10 +114,14 @@ public class UIManagerScript : MonoBehaviour {
 		}
 		else if (Application.loadedLevelName.Equals("MenuScene"))
 		{
-			// retrieve EngAGe.E data about the game 
-			StartCoroutine(EngAGe.E.getGameDesc(idSG));
-			StartCoroutine(EngAGe.E.getBadgesWon(idSG));
-			StartCoroutine(EngAGe.E.getLeaderboard(idSG));
+            // retrieve EngAGe.E data about the game 
+            EngAGe.E.testConnectionAndGetGameDesc(idSG);
+
+            // retrieve (on or off line) badges won by player
+            EngAGe.E.testConnectionAndGetBadgesWon(idSG);
+
+            // get leaderboard if internet available local copy otherwise
+			EngAGe.E.testConnectionAndGetLeaderboard(idSG);
 
 			RectTransform transform = contentPanel.gameObject.transform as RectTransform;        
 			Vector2 position = transform.anchoredPosition;
@@ -132,8 +141,10 @@ public class UIManagerScript : MonoBehaviour {
 
 			// initialise scores
 			UpdateScores();
-		}
-	}
+        }
+        pnl_error_connection.SetActive(EngAGe.E.getErrorCode() == 200);
+    }
+
 
 	public void GoToMenu()
 	{
@@ -146,7 +157,8 @@ public class UIManagerScript : MonoBehaviour {
 					param.Add("value", inputField.text); 
 				} 
 			} 
-		} 
+		}
+        EngAGe.E.SaveParameters();
 		Application.LoadLevel("MenuScene");
 	}
 	
@@ -161,7 +173,7 @@ public class UIManagerScript : MonoBehaviour {
 		password = txtPassword.text;
 
         //EngAGe.E.LoadConfigAndLogsFiles();
-		StartCoroutine(EngAGe.E.loginStudent(idSG, username, password, "LoginScene", "MenuScene", "ParametersScene"));
+		EngAGe.E.testConnectionAndLoginStudent(idSG, username, password, "LoginScene", "MenuScene", "ParametersScene");
 	}
 
 	public void GetStartedGuest()
@@ -215,14 +227,14 @@ public class UIManagerScript : MonoBehaviour {
 	public void OpenInfo()
 	{
 		// get the seriousGame object from EngAGe.E 
-		JSONNode SGdesc = EngAGe.E.getSG () ["seriousGame"]; 
+		JSONNode SGdesc = EngAGe.E.getSG () ["seriousGame"];
 
 		// display the title and description 
-		txt_title.text = SGdesc["name"]; 
-		txt_description.text = SGdesc["description"]; 
+		txt_title.text = SGdesc["name"];
+        txt_description.text = SGdesc["description"];
 
-		// open the window 
-		infoDialog.SetActive (!infoDialog.activeSelf);
+        // open the window 
+        infoDialog.SetActive (!infoDialog.activeSelf);
 	}
 	
 	public void CloseInfo()
@@ -234,8 +246,8 @@ public class UIManagerScript : MonoBehaviour {
 		// get the leaderboard object from EngAGe.E
 		JSONNode leaderboard = EngAGe.E.getLeaderboardList ();
 		
-		// look only at the eu_score 
-		JSONArray euScorePerf = leaderboard ["eu_score"].AsArray;
+		// look only at the eu_score (if it exists)
+        JSONArray euScorePerf = (leaderboard["eu_score"] != null)? leaderboard ["eu_score"].AsArray : new JSONArray();
 		
 		// display up to 10 best gameplays
 		int max = 10;

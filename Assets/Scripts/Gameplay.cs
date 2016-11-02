@@ -3,7 +3,7 @@
 [Serializable]
 public class Gameplay
 {
-    public int idPlayer;
-    public string username;
+    public Player player;
+    public string actions;
 }
 
