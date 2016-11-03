@@ -118,7 +118,7 @@ public class UIManagerScript : MonoBehaviour {
             EngAGe.E.testConnectionAndGetGameDesc(idSG);
 
             // retrieve (on or off line) badges won by player
-            EngAGe.E.testConnectionAndGetBadgesWon(idSG);
+            EngAGe.E.testConnectionAndGetBadges(idSG);
 
             // get leaderboard if internet available local copy otherwise
 			EngAGe.E.testConnectionAndGetLeaderboard(idSG);
@@ -142,7 +142,16 @@ public class UIManagerScript : MonoBehaviour {
 			// initialise scores
 			UpdateScores();
         }
-        pnl_error_connection.SetActive(EngAGe.E.getErrorCode() == 200);
+        if (EngAGe.E.internetNotAvailable())
+        {
+            print("no internet connection");
+            pnl_error_connection.SetActive(true);
+        }
+        else
+        {
+            print("internet connection available");
+            pnl_error_connection.SetActive(false);
+        }
     }
 
 

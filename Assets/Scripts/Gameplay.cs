@@ -12,6 +12,9 @@ public class Gameplay
     // player playing the game
     public Player player;
 
+    // scores JSON string
+    public string scores;
+
     // log of all actions performed in the game
     public List<Action> actions;
 }

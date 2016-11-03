@@ -98,9 +98,10 @@ namespace SimpleJSON
         {
             return "JSONNode";
         }
- 
+
+
         #endregion common interface
- 
+
         #region typecasting properties
         public virtual int AsInt
         {
@@ -767,7 +768,15 @@ namespace SimpleJSON
                     yield return N.Value;
             }
         }
- 
+
+        public ArrayList GetKeys() // The method is named "GetKeys()"
+        {
+            ArrayList arrayOfStrings = new ArrayList(); // declares new array
+            foreach (KeyValuePair<string, JSONNode> N in m_Dict) // for each key/values
+                arrayOfStrings.Add(N.Key); // I add only the keys
+            return arrayOfStrings; // And then I get them all :D
+        }
+
         public IEnumerator GetEnumerator()
         {
             foreach(KeyValuePair<string, JSONNode> N in m_Dict)

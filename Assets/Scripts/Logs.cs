@@ -20,9 +20,22 @@ public class Logs
     // config file in json form for current player's version
     public String configFile;
 
+    // constructor
+    public Logs()
+    {
+        player = new Player();
+        offlinePlayers = new List<Player>();
+        gameplays = new List<Gameplay>();
+    }
+
     // saves the object as a json formatted string
     public string SaveToString()
     {
         return JsonUtility.ToJson(this);
+    }
+    // saves the object as a json formatted string
+    public string SaveToPrettyString()
+    {
+        return JsonUtility.ToJson(this, true);
     }
 }

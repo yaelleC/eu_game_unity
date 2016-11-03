@@ -37,7 +37,7 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public void OnPointerEnter(PointerEventData data)
 	{
 		// get the configuration file parsed in json format
-		JSONNode sg = engage.getSG ();
+		JSONNode sg = EngAGe.E.getSG ();
 		
 		// get name of the badge represented
 		string badgeName = this.name.Replace ("img_badge_", "");
@@ -45,6 +45,7 @@ public class BadgeScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		// update the description to the message defined in the config file
 		// if no message is found the tooltip will display default message
 		string desc = "description not available";
+        
 		if ((sg ["feedback"] != null) && (sg ["feedback"][badgeName] != null)) 
 		{
 			desc = sg ["feedback"] [badgeName] ["message"];
