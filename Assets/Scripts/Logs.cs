@@ -19,7 +19,7 @@ public class Logs
 
     // config file in json form for current player's version
     public String configFile;
-
+    
     // constructor
     public Logs()
     {
@@ -37,5 +37,28 @@ public class Logs
     public string SaveToPrettyString()
     {
         return JsonUtility.ToJson(this, true);
+    }
+
+    // log an action to a specific gameplay
+    public void logAction (Action action, int p_idGP)
+    {
+        foreach(Gameplay gp in gameplays)
+        {
+            if (gp.idGP == p_idGP)
+            {
+                gp.actions.Add(action);
+            }
+        }
+    }
+
+    public void updateLastActionTime (int p_idGP)
+    {
+        foreach (Gameplay gp in gameplays)
+        {
+            if (gp.idGP == p_idGP)
+            {
+                gp.lastActionTime = new DateTime();
+            }
+        }
     }
 }

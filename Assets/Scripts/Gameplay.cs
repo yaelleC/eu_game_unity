@@ -17,5 +17,16 @@ public class Gameplay
 
     // log of all actions performed in the game
     public List<Action> actions;
+
+    public DateTime timestarted;
+    public DateTime lastActionTime;
+
+    // constructor
+    public Gameplay()
+    {
+        player = new Player();
+        actions = new List<Action>();
+    }
+
 }
 

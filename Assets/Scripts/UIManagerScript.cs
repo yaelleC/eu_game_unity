@@ -293,19 +293,30 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void UpdateFeedback(JSONArray feedbackReceived) 
 	{
+        print(feedbackReceived.ToString());
 		foreach (JSONNode f in feedbackReceived)
 		{
 			// set color to write line into
 			string color = "black";
-			if (string.Equals( f["type"], "POSITIVE"))
+
+            string type = f["type"];
+            string final = "";
+            if (f["final"] != null)
+            {
+                final = f["final"];
+            }
+           
+            print(type.ToLower());
+
+			if (string.Equals(type.ToLower(), "positive"))
 				color = "green";
-			if (string.Equals( f["type"], "NEGATIVE"))
+			if (string.Equals(type.ToLower(), "negative"))
 				color="red";
 			
 			txtFeedback.text += "<color=\"" + color + "\">" + 
 				f["message"] + "</color>\n";
 			// trigger end of game?
-			if (string.Equals(f["final"], "lose"))
+			if (string.Equals(final.ToLower(), "lose"))
 			{
 				// tell EngAGe.E it’s the end of the game (lost)
 				StartCoroutine (EngAGe.E.endGameplay(false));
@@ -314,7 +325,7 @@ public class UIManagerScript : MonoBehaviour {
 				// open a dialog window to go to menu or restart game
 				restartLoseDialog.SetActive(true);
 			}
-			else if (string.Equals(f["final"], "win"))
+			else if (string.Equals(final.ToLower(), "win"))
 			{
 				// tell EngAGe.E it’s the end of the game (won)
 				StartCoroutine (EngAGe.E.endGameplay(true));
@@ -323,7 +334,7 @@ public class UIManagerScript : MonoBehaviour {
 				// open a dialog window to go to menu or restart game
 				restartWinDialog.SetActive(true);
 			}
-			else if (string.Equals(f["type"], "ADAPTATION"))
+			else if (string.Equals(type.ToLower(), "adaptation"))
 			{
 				if (string.Equals(f["name"], "speedGame"))
 				{

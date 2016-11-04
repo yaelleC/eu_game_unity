@@ -44,6 +44,9 @@ public class EngAGe : MonoBehaviour
     private static JSONNode leaderboard = new JSONNode();
     private static JSONNode seriousGame = new JSONNode();
 
+    // to store callback info
+    private static Action<JSONNode> callback;
+
     // web services errors
     private static string error;
     private static int errorCode;
@@ -63,7 +66,7 @@ public class EngAGe : MonoBehaviour
         path = Path.Combine(Application.persistentDataPath, jsonLogsURL);
 
         // uncomment to clean log file
-        //SaveLogs();
+        // SaveLogs();
 
         // load log info (if any)
         LoadPlayerInfo();
@@ -127,6 +130,8 @@ public class EngAGe : MonoBehaviour
 
         if (www.error != null)
         {
+            errorCode = 200;
+            error = "No internet connection available";
             action(false, parameters);
         }
         else
@@ -138,6 +143,8 @@ public class EngAGe : MonoBehaviour
             }
             else
             {
+                errorCode = 200;
+                error = "No internet connection available";
                 action(false, parameters);
             }
         }
@@ -232,9 +239,6 @@ public class EngAGe : MonoBehaviour
         }
         else
         {
-            errorCode = 200;
-            error = "No internet connection available";
-
             // create a temporary offline player
             Player offlinePlayer = new Player();
             offlinePlayer.idPlayer = -1;
@@ -423,9 +427,6 @@ public class EngAGe : MonoBehaviour
         }
         else
         {
-            errorCode = 200;
-            error = "No internet connection available";
-
             // find offline game desc if any 
             seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
         }
@@ -466,9 +467,6 @@ public class EngAGe : MonoBehaviour
         }
         else
         {
-            errorCode = 200;
-            error = "No internet connection available";
-
             // find offline game desc if any 
             badges = (logs.player != null && logs.player.badges != null) ? JSON.Parse(logs.player.badges).AsArray : new JSONArray();
         }
@@ -515,10 +513,7 @@ public class EngAGe : MonoBehaviour
         }
         else
         {
-            errorCode = 200;
-            error = "No internet connection available";
-
-            // find offline leaderboard if any 
+           // find offline leaderboard if any 
             leaderboard = (logs.leaderboard != null)? JSON.Parse(logs.leaderboard) : new JSONNode();            
         }
     }
@@ -564,15 +559,13 @@ public class EngAGe : MonoBehaviour
             StartCoroutine(startGameplayOnline(startGPData["idSG"].AsInt, startGPData["sceneGame"]));
         }
         else
-        {
-            errorCode = 200;
-            error = "No internet connection available";
-            
+        {            
             // create a new offline gameplay
             Gameplay gp = new Gameplay();
             // set its id (convention = for an offline gameplay id its negative position in the gameplays array)
             gp.idGP = (logs.gameplays.Count+1) * -1;
             gp.player = logs.player;
+            gp.timestarted = new DateTime();
 
             // get score startings values from config file
 
@@ -677,7 +670,232 @@ public class EngAGe : MonoBehaviour
         return scoresArray;
     }
 
-    public IEnumerator assess(string p_action, JSONNode p_values, Action<JSONNode> callback)
+    public void testConnectionAndAssess(string p_action, JSONNode p_values, Action<JSONNode> p_callback)
+    {
+        string assessDataString =
+               "{" +
+                   "\"action\": " + p_action +
+                   ", \"values\": " + p_values.ToString() +
+                   "}";
+        
+        callback = p_callback;
+
+        JSONNode assessData = JSON.Parse(assessDataString);
+
+        StartCoroutine(testConnection(assess, assessData));
+    }
+
+    private void assess(bool internetAccess, JSONNode assessData)
+    {
+        // if there is internet access and the gameplay was not started offline
+        if (internetAccess && idGameplay > 0 && false)
+        {
+            StartCoroutine(assessOnline(assessData["action"], assessData["values"], callback));
+        }
+        else
+        {
+            string action = assessData["action"];
+            JSONNode values = assessData["values"];
+
+            // if idGameplay > 0 (i.e. started online but no connection anymore)  
+            // and not already in logs
+            // -> create a new gameplay in logs
+            if (idGameplay > 0 && !gameplayInLogs(idGameplay))
+            {
+                Gameplay gp = new Gameplay();
+                gp.idGP = idGameplay;
+                gp.player = logs.player;
+
+                logs.gameplays.Add(gp);
+            }
+            
+            // JSON to return
+            JSONClass returnAssess = new JSONClass();
+            returnAssess.Add("scores", scores);
+            returnAssess.Add("feedback", new JSONArray());
+
+            print("*** returnAssess : " + returnAssess.ToString());
+
+            // get the evidence model of the config file (containing assessment logic)
+            if (seriousGame.AsObject == null)
+            {
+                print("SG null");
+                seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
+            }
+            JSONNode evidenceModel = seriousGame["evidenceModel"];
+            
+            // deal with unknown action error if need be
+            // otherwise get the related assessment and its possible reactions
+            if (evidenceModel[action].AsObject == null)
+            {
+                print("name of action : '" + action + "' was not found in the config file");
+                return;
+            }
+            JSONClass assessment = evidenceModel[action].AsObject;
+            JSONArray reactions = assessment["reactions"].AsArray;
+            
+            // boolean true if the values passed are found in the config file
+            // if false the system will look for the default
+            Boolean valuesMatchFound = false;
+            JSONNode elseReaction = null ;
+            
+            // look for the values passed
+            foreach (JSONClass reaction in reactions)
+            {
+                // save else reaction if applicable
+                if (reaction["else"] != null)
+                {
+                    elseReaction = reaction;
+                }
+
+                // otherwise
+                JSONArray valuesSupported = new JSONArray();
+                if (reaction["values"] != null)
+                {
+                    valuesSupported = reaction["values"].AsArray;
+                }
+                foreach (JSONNode v in valuesSupported)
+                {
+                    // if the values passed were entered specifically in the config file
+                    if (v.ToString().Equals(values.ToString()))
+                    {
+                        valuesMatchFound = true;
+
+                        // get scores to update
+                        JSONArray updates = reaction["marks"].AsArray;
+
+                        updateScores(updates, values, action);
+
+                        // return potential feedback
+                        if (reaction["feedback"].AsArray != null)
+                        {                            
+                            foreach (JSONNode f in reaction["feedback"].AsArray)
+                            {
+                                JSONClass feedbackMessage = getFeedbackMessage(f["name"]);
+                                feedbackMessage["name"] = f["name"];
+                                returnAssess["feedback"].Add(feedbackMessage);                                
+                            }
+                        }
+                        
+                        print("feedback: " + returnAssess["feedback"].AsArray.ToString());
+                        returnAssess["scores"] = scores;
+                    } // end if values ==
+                } // end foreach v in valuesSupported
+            } // end foreach reaction
+
+            // deal with "else" option if !valuesMatchFound
+            if (!valuesMatchFound && elseReaction != null)
+            {
+                valuesMatchFound = true;
+
+                updateScores(elseReaction["marks"].AsArray, values, action);
+
+                // return potential feedback
+                if (elseReaction["feedback"].AsArray != null)
+                {
+                    foreach (JSONNode f in elseReaction["feedback"].AsArray)
+                    {
+                        JSONClass feedbackMessage = getFeedbackMessage(f["name"]);
+                        feedbackMessage["name"] = f["name"];
+                        returnAssess["feedback"].Add(feedbackMessage);
+                    }
+                }
+
+            }
+
+            if (!valuesMatchFound)
+            {
+                print("no match was found in the database for the values received");
+            }
+                      
+            // any badge recieved  
+            foreach (JSONNode f in returnAssess["feedback"].AsArray)
+            {
+                string type = f["type"];
+                // log badge
+                if (string.Equals(type.ToUpper(), "BADGE"))
+                {
+                    badgesWon.Add(f);
+                }
+            }
+
+            SaveLogs();
+
+            callback(returnAssess);
+        }
+    }
+
+    private void updateScores(JSONArray updates, JSONNode values, string action)
+    {
+        foreach (JSONNode update in updates)
+        {
+            // get score name
+            string score = update["learningOutcome"].ToString();
+            // get reset true if score needs to be reset to a certain value
+            Boolean reset = (update["reset"] != null);
+
+            // get mark to be added / reset to
+            float mark = 0f;
+            if (update["markVar"] != null)
+            {
+                mark = values[update["markVar"]].AsFloat;
+            }
+            else if (update["mark"] != null)
+            {
+                mark = update["mark"].AsFloat;
+            }
+            updateScore(score, mark, reset);
+
+            // log action
+            Action actionLogged = new Action(action, score, mark);
+            logs.logAction(actionLogged, idGameplay);
+            logs.updateLastActionTime(idGameplay);
+        }
+    }
+
+    private JSONClass getFeedbackMessage(string name)
+    {
+        if (seriousGame.AsObject == null)
+        {
+            print("SG null");
+            seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
+        }
+
+        return seriousGame["feedback"][name].AsObject;
+    }
+    
+    private void updateScore(string score, float mark, bool reset)
+    {
+        foreach (JSONNode s in scores)
+        {
+           if (s["name"].ToString().Equals(score))
+            {
+                if (reset)
+                {
+                    s["value"] = mark.ToString();
+                }
+                else
+                {
+                    s["value"] = (s["value"].AsFloat + mark).ToString();
+                }
+            }
+        }
+    }
+
+    private Boolean gameplayInLogs(int idGP)
+    {
+        foreach(Gameplay gp in logs.gameplays)
+        {
+            if (gp.idGP == idGP)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // this function assesses the action performed online, no data is logged locally
+    public IEnumerator assessOnline(string p_action, JSONNode p_values, Action<JSONNode> callback)
     {
         print("--- assess action (" + p_action + ") ---");
 
