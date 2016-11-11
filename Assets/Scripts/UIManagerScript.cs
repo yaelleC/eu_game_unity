@@ -144,12 +144,10 @@ public class UIManagerScript : MonoBehaviour {
         }
         if (EngAGe.E.internetNotAvailable())
         {
-            print("no internet connection");
             pnl_error_connection.SetActive(true);
         }
         else
         {
-            print("internet connection available");
             pnl_error_connection.SetActive(false);
         }
     }
@@ -299,14 +297,16 @@ public class UIManagerScript : MonoBehaviour {
 			// set color to write line into
 			string color = "black";
 
-            string type = f["type"];
+            string type = "";
             string final = "";
             if (f["final"] != null)
             {
                 final = f["final"];
             }
-           
-            print(type.ToLower());
+            if (f["type"] != null)
+            {
+                type = f["type"];
+            }
 
 			if (string.Equals(type.ToLower(), "positive"))
 				color = "green";
@@ -319,7 +319,7 @@ public class UIManagerScript : MonoBehaviour {
 			if (string.Equals(final.ToLower(), "lose"))
 			{
 				// tell EngAGe.E it’s the end of the game (lost)
-				StartCoroutine (EngAGe.E.endGameplay(false));
+				EngAGe.E.testConnectionAndEndGameplay(false);
 				// tell the mouse it lost the game 
 				mouseC.loseGame();
 				// open a dialog window to go to menu or restart game
@@ -328,7 +328,7 @@ public class UIManagerScript : MonoBehaviour {
 			else if (string.Equals(final.ToLower(), "win"))
 			{
 				// tell EngAGe.E it’s the end of the game (won)
-				StartCoroutine (EngAGe.E.endGameplay(true));
+				EngAGe.E.testConnectionAndEndGameplay(true);
 				// tell the mouse it won the game 
 				mouseC.winGame();
 				// open a dialog window to go to menu or restart game

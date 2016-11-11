@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
+using System;
 
 [Serializable]
 public class Logs
@@ -40,9 +40,9 @@ public class Logs
     }
 
     // log an action to a specific gameplay
-    public void logAction (Action action, int p_idGP)
+    public void logAction(Action action, int p_idGP)
     {
-        foreach(Gameplay gp in gameplays)
+        foreach (Gameplay gp in gameplays)
         {
             if (gp.idGP == p_idGP)
             {
@@ -51,14 +51,58 @@ public class Logs
         }
     }
 
-    public void updateLastActionTime (int p_idGP)
+    // log feedback to a specific gameplay
+    public void logFeedback(Feedback feedback, int p_idGP)
     {
         foreach (Gameplay gp in gameplays)
         {
             if (gp.idGP == p_idGP)
             {
-                gp.lastActionTime = new DateTime();
+                gp.feedback.Add(feedback);
             }
         }
+    }
+
+    public bool feedbackHasBeenTriggered(string feedbackName, int p_idGP)
+    {
+        Gameplay gp = getGameplayByID(p_idGP);
+        if (gp == null)
+        {
+            // TODO deal with error
+            return false;
+        }
+        foreach (Feedback f in gp.feedback)
+        {
+            if (f.feedback.Equals(feedbackName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateLastActionTime(int p_idGP)
+    {
+        getGameplayByID(p_idGP).Update();
+    }
+    public void updateScores(string scores, int p_idGP)
+    {
+        getGameplayByID(p_idGP).scores = scores;
+    }
+    public void endGameplay(string GPwon, int p_idGP)
+    {
+        getGameplayByID(p_idGP).End(GPwon);
+    }
+
+    public Gameplay getGameplayByID (int p_idGP)
+    {
+        foreach (Gameplay gp in gameplays)
+        {
+            if (gp.idGP == p_idGP)
+            {
+                return gp;
+            }
+        }
+        return null;
     }
 }

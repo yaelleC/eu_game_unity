@@ -46,6 +46,7 @@ public class EngAGe : MonoBehaviour
 
     // to store callback info
     private static Action<JSONNode> callback;
+    private static Action<JSONArray> callbackArray;
 
     // web services errors
     private static string error;
@@ -66,7 +67,7 @@ public class EngAGe : MonoBehaviour
         path = Path.Combine(Application.persistentDataPath, jsonLogsURL);
 
         // uncomment to clean log file
-        // SaveLogs();
+         SaveLogs();
 
         // load log info (if any)
         LoadPlayerInfo();
@@ -80,8 +81,6 @@ public class EngAGe : MonoBehaviour
 
     public static void SaveLogs()
     {
-        print("saving logs");
-
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(path);
         bf.Serialize(file, logs);
@@ -98,7 +97,7 @@ public class EngAGe : MonoBehaviour
             file.Close();
         }
 
-        print("loading logs : " + logs.SaveToPrettyString());
+        Debug.Log("loading logs from "+path+" : " + logs.SaveToPrettyString());
     }
     // loads config file + save in JSON variable
     public void LoadConfigFile()
@@ -483,7 +482,7 @@ public class EngAGe : MonoBehaviour
 
         badges = JSON.Parse(www.text).AsArray;
 
-        print("Badges received! " + badges.ToString());
+        Debug.Log("Badges received! " + badges.ToString());
 
         // store badges for offline connection
         if (logs.player != null)
@@ -565,7 +564,7 @@ public class EngAGe : MonoBehaviour
             // set its id (convention = for an offline gameplay id its negative position in the gameplays array)
             gp.idGP = (logs.gameplays.Count+1) * -1;
             gp.player = logs.player;
-            gp.timestarted = new DateTime();
+            gp.Start();
 
             // get score startings values from config file
 
@@ -579,14 +578,14 @@ public class EngAGe : MonoBehaviour
             }
 
             gp.scores = scores.ToString();
-
+            
             logs.gameplays.Add(gp);
             SaveLogs();
             
             // saves idGP for engage.cs
             idGameplay = gp.idGP;
 
-            print("Gameplay Started! id: " + idGameplay);
+            Debug.Log("Gameplay Started! id: " + idGameplay);
 
             Application.LoadLevel(startGPData["sceneGame"]);
         }
@@ -631,7 +630,7 @@ public class EngAGe : MonoBehaviour
         
         idGameplay = int.Parse(www.text);
 
-        print("Gameplay Started! id: " + idGameplay);
+        Debug.Log("Gameplay Started! id: " + idGameplay);
 
         string URL2 = baseURL + "/gameplay/" + idGameplay + "/scores/";
 
@@ -660,9 +659,7 @@ public class EngAGe : MonoBehaviour
             score.Add("name", key);
             score.Add("value", scores[key]["value"]);
             score.Add("type", "null");
-
-            print(key + " : " + score.ToString());
-
+            
             // add the object to the list
             scoresArray.Add(score);
         }
@@ -670,6 +667,7 @@ public class EngAGe : MonoBehaviour
         return scoresArray;
     }
 
+    #region assess functions
     public void testConnectionAndAssess(string p_action, JSONNode p_values, Action<JSONNode> p_callback)
     {
         string assessDataString =
@@ -688,7 +686,7 @@ public class EngAGe : MonoBehaviour
     private void assess(bool internetAccess, JSONNode assessData)
     {
         // if there is internet access and the gameplay was not started offline
-        if (internetAccess && idGameplay > 0 && false)
+        if (internetAccess && idGameplay > 0)
         {
             StartCoroutine(assessOnline(assessData["action"], assessData["values"], callback));
         }
@@ -705,6 +703,7 @@ public class EngAGe : MonoBehaviour
                 Gameplay gp = new Gameplay();
                 gp.idGP = idGameplay;
                 gp.player = logs.player;
+                gp.scores = scores.ToString();
 
                 logs.gameplays.Add(gp);
             }
@@ -713,13 +712,11 @@ public class EngAGe : MonoBehaviour
             JSONClass returnAssess = new JSONClass();
             returnAssess.Add("scores", scores);
             returnAssess.Add("feedback", new JSONArray());
-
-            print("*** returnAssess : " + returnAssess.ToString());
-
+            
             // get the evidence model of the config file (containing assessment logic)
             if (seriousGame.AsObject == null)
             {
-                print("SG null");
+                Debug.Log("SG null");
                 seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
             }
             JSONNode evidenceModel = seriousGame["evidenceModel"];
@@ -728,7 +725,7 @@ public class EngAGe : MonoBehaviour
             // otherwise get the related assessment and its possible reactions
             if (evidenceModel[action].AsObject == null)
             {
-                print("name of action : '" + action + "' was not found in the config file");
+                Debug.Log("name of action : '" + action + "' was not found in the config file");
                 return;
             }
             JSONClass assessment = evidenceModel[action].AsObject;
@@ -764,7 +761,7 @@ public class EngAGe : MonoBehaviour
                         // get scores to update
                         JSONArray updates = reaction["marks"].AsArray;
 
-                        updateScores(updates, values, action);
+                        updateScores(updates, values, assessData.AsObject);
 
                         // return potential feedback
                         if (reaction["feedback"].AsArray != null)
@@ -773,12 +770,14 @@ public class EngAGe : MonoBehaviour
                             {
                                 JSONClass feedbackMessage = getFeedbackMessage(f["name"]);
                                 feedbackMessage["name"] = f["name"];
-                                returnAssess["feedback"].Add(feedbackMessage);                                
+                                returnAssess["feedback"].Add(feedbackMessage);
+
+                                // log feedback;
+                                Feedback feedbackLogged = new Feedback(feedbackMessage["name"], feedbackMessage["message"]);
+                                logs.logFeedback(feedbackLogged, idGameplay);
                             }
                         }
                         
-                        print("feedback: " + returnAssess["feedback"].AsArray.ToString());
-                        returnAssess["scores"] = scores;
                     } // end if values ==
                 } // end foreach v in valuesSupported
             } // end foreach reaction
@@ -788,7 +787,7 @@ public class EngAGe : MonoBehaviour
             {
                 valuesMatchFound = true;
 
-                updateScores(elseReaction["marks"].AsArray, values, action);
+                updateScores(elseReaction["marks"].AsArray, values, assessData.AsObject);
 
                 // return potential feedback
                 if (elseReaction["feedback"].AsArray != null)
@@ -798,6 +797,10 @@ public class EngAGe : MonoBehaviour
                         JSONClass feedbackMessage = getFeedbackMessage(f["name"]);
                         feedbackMessage["name"] = f["name"];
                         returnAssess["feedback"].Add(feedbackMessage);
+
+                        // log feedback;
+                        Feedback feedbackLogged = new Feedback(feedbackMessage["name"], feedbackMessage["message"]);
+                        logs.logFeedback(feedbackLogged, idGameplay);
                     }
                 }
 
@@ -805,19 +808,32 @@ public class EngAGe : MonoBehaviour
 
             if (!valuesMatchFound)
             {
-                print("no match was found in the database for the values received");
+                Debug.Log("no match was found in the database for the values received");
             }
-                      
+
+            feedback = returnAssess["feedback"].AsArray;
+            // update feedback with inactivity and outcome feedback
+            getFeedbackOffline();
+
+            returnAssess["feedback"] = feedback;
+            returnAssess["scores"] = scores;
+
             // any badge recieved  
             foreach (JSONNode f in returnAssess["feedback"].AsArray)
             {
                 string type = f["type"];
                 // log badge
-                if (string.Equals(type.ToUpper(), "BADGE"))
+                if (f["type"] != null && string.Equals(type.ToUpper(), "BADGE"))
                 {
                     badgesWon.Add(f);
                 }
+                // TODO: replace param name
+
             }
+
+            Debug.Log("scores: " + scores.ToString());
+
+            logs.updateScores(scores.ToString(), idGameplay);
 
             SaveLogs();
 
@@ -825,7 +841,7 @@ public class EngAGe : MonoBehaviour
         }
     }
 
-    private void updateScores(JSONArray updates, JSONNode values, string action)
+    private void updateScores(JSONArray updates, JSONNode values, JSONClass action)
     {
         foreach (JSONNode update in updates)
         {
@@ -847,9 +863,12 @@ public class EngAGe : MonoBehaviour
             updateScore(score, mark, reset);
 
             // log action
-            Action actionLogged = new Action(action, score, mark);
+            Action actionLogged = new Action(action.ToString(), score, mark);
+            
             logs.logAction(actionLogged, idGameplay);
             logs.updateLastActionTime(idGameplay);
+
+            SaveLogs();
         }
     }
 
@@ -857,7 +876,7 @@ public class EngAGe : MonoBehaviour
     {
         if (seriousGame.AsObject == null)
         {
-            print("SG null");
+            Debug.Log("SG null");
             seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
         }
 
@@ -897,7 +916,7 @@ public class EngAGe : MonoBehaviour
     // this function assesses the action performed online, no data is logged locally
     public IEnumerator assessOnline(string p_action, JSONNode p_values, Action<JSONNode> callback)
     {
-        print("--- assess action (" + p_action + ") ---");
+        Debug.Log("--- assess action (" + p_action + ") ---");
 
         string putDataString =
             "{" +
@@ -916,7 +935,7 @@ public class EngAGe : MonoBehaviour
 
         feedback = returnAssess["feedback"].AsArray;
         scores = returnAssess["scores"].AsArray;
-        print("Action " + putDataString + " assessed! returned: " + returnAssess.ToString());
+        Debug.Log("Action " + putDataString + " assessed! returned: " + returnAssess.ToString());
         foreach (JSONNode f in feedback)
         {
             // log badge
@@ -929,48 +948,32 @@ public class EngAGe : MonoBehaviour
         callback(returnAssess);
     }
 
-    public IEnumerator endGameplay(bool win)
+    #endregion
+    
+    public void testConnectionAndGetScores(Action<JSONArray> callbackScore)
     {
-        print("--- end Gameplay ---");
-        string winString = (win) ? "win" : "lose";
-        string URL = baseURL + "/gameplay/" + idGameplay + "/end/" + winString;
-        print(URL);
+        callbackArray = callbackScore;
 
-        Dictionary<string, string> headers2 = new Dictionary<string, string>();
-        headers2.Add("Content-Type", "text/plain");
+        JSONNode scoresData = new JSONNode();
 
-        WWW www = new WWW(URL, Encoding.UTF8.GetBytes(winString), headers2);
-
-        // wait for the requst to finish
-        yield return www;
-
-        if (www.error != null && !www.error.Equals(""))
+        StartCoroutine(testConnection(getScores, scoresData));
+    }
+    
+    private void getScores(bool internetAccess, JSONNode scoresData)
+    {
+        if (internetAccess)
         {
-            print("Error: " + www.error);
+            StartCoroutine(getScoresOnline(callbackArray));
         }
         else
         {
-            print("Gameplay Ended! return: " + www.text);
+            callbackArray(scores);
         }
     }
 
-    public IEnumerator endGameplay(String win)
+    public IEnumerator getScoresOnline(Action<JSONArray> callbackScore)
     {
-        print("--- end Gameplay ---");
-        string URL = baseURL + "/gameplay/" + idGameplay + "/end/" + win;
-        print(URL);
-
-        WWW www = new WWW(URL, Encoding.UTF8.GetBytes(win));
-
-        // wait for the requst to finish
-        yield return www;
-
-        print("Gameplay Ended! return: " + www.text);
-    }
-
-    public IEnumerator updateScores(Action<JSONArray> callbackScore)
-    {
-        print("--- getScores ---");
+        Debug.Log("--- getScores ---");
 
         string URL = baseURL + "/gameplay/" + idGameplay + "/scores/";
 
@@ -980,13 +983,107 @@ public class EngAGe : MonoBehaviour
         yield return www;
 
         scores = JSON.Parse(www.text).AsArray;
-        print("Scores received! " + scores.ToString());
+        Debug.Log("Scores received! " + scores.ToString());
         callbackScore(scores);
     }
 
-    public IEnumerator updateFeedback(Action<JSONArray> callbackFeedback)
+    public void testConnectionAndGetFeedback(Action<JSONArray> callbackFeedback)
     {
-        print("--- update Feedback ---");
+        callbackArray = callbackFeedback;
+        JSONNode scoresData = new JSONNode();
+
+        StartCoroutine(testConnection(getFeedback, scoresData));
+    }
+
+    private void getFeedback(bool internetAccess, JSONNode scoresData)
+    {
+        if (internetAccess)
+        {
+            StartCoroutine(getFeedbackOnline(callbackArray));
+        }
+        else
+        {
+            getFeedbackOffline();
+
+            callbackArray(feedback);
+        }
+    }
+
+    public void getFeedbackOffline()
+    {
+        // get the evidence model of the config file (containing assessment logic)
+        if (seriousGame.AsObject == null)
+        {
+            Debug.Log("SG null");
+            seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
+        }
+        // for every inactivity feedback 
+        foreach (JSONNode f in seriousGame["inactivityFeedback"].AsArray)
+        {
+            DateTime now = new DateTime();
+            Double difference = (now - logs.getGameplayByID(idGameplay).lastActionTime).TotalSeconds;
+
+            string sign = f["sign"];
+            if ((sign.Equals(">") && difference > f["limit"].AsInt)
+                    || (sign.Equals("<") && difference < f["limit"].AsInt))
+            {
+                foreach (string inactivityFeedback in f["feedback"].AsArray)
+                {                    
+                    if (!logs.feedbackHasBeenTriggered(inactivityFeedback, idGameplay))
+                    {
+                        JSONNode feedbackToTrigger = seriousGame["feedback"][inactivityFeedback];
+                        feedbackToTrigger.Add("id", "-1");
+                        feedbackToTrigger.Add("name", inactivityFeedback);
+
+                        feedback.Add(feedbackToTrigger);
+                        // log feedback;
+                        Feedback feedbackLogged = new Feedback(feedbackToTrigger["name"], feedbackToTrigger["message"]);
+                        logs.logFeedback(feedbackLogged, idGameplay);
+                    }
+                }
+            }
+            SaveLogs();
+        }
+
+        // goal related feedback
+        foreach (JSONNode score in scores)
+        {
+            foreach (JSONNode f in
+                        seriousGame["learningOutcomes"][score["name"]]["feedbackTriggered"].AsArray)
+            {
+                string sign = f["sign"];
+                
+                if ((sign.Equals(">") && score["value"].AsFloat > f["limit"].AsFloat)
+                    || (sign.Equals("<") && score["value"].AsFloat < f["limit"].AsFloat))
+                {
+                    foreach (JSONNode scoreFeedback in f["feedback"].AsArray)
+                    {
+
+                        bool repeat = (scoreFeedback["repeat"] != null && !scoreFeedback["repeat"].Equals("false"));
+                        string name = scoreFeedback["name"];
+
+                        if (!logs.feedbackHasBeenTriggered(name, idGameplay) || repeat)
+                        {
+                            JSONNode feedbackToTrigger = seriousGame["feedback"][scoreFeedback["name"]];
+                            feedbackToTrigger.Add("id", "-1");
+                            feedbackToTrigger.Add("name", scoreFeedback["name"]);
+
+                            feedback.Add(feedbackToTrigger);
+
+                            // log feedback;
+                            Feedback feedbackLogged = new Feedback(feedbackToTrigger["name"], feedbackToTrigger["message"]);
+                            logs.logFeedback(feedbackLogged, idGameplay);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    public IEnumerator getFeedbackOnline(Action<JSONArray> callbackFeedback)
+    {
+        Debug.Log("--- update Feedback ---");
 
         string URL = baseURL + "/gameplay/" + idGameplay + "/feedback/";
 
@@ -996,7 +1093,7 @@ public class EngAGe : MonoBehaviour
         yield return www;
 
         feedback = JSON.Parse(www.text).AsArray;
-        print("Feedback received! " + feedback.ToString());
+        Debug.Log("Feedback received! " + feedback.ToString());
         foreach (JSONNode f in feedback)
         {
             // log badge
@@ -1009,6 +1106,60 @@ public class EngAGe : MonoBehaviour
         callbackFeedback(feedback);
     }
 
+    public void testConnectionAndEndGameplay(bool win)
+    {
+        string winString = (win) ? "win" : "lose";
+        testConnectionAndEndGameplay(winString);
+    }
+
+    public void testConnectionAndEndGameplay(string win)
+    {
+        string endDataString =
+               "{" +
+                   "\"win\": " + win +
+                   "}";
+        
+        JSONNode endData = JSON.Parse(endDataString);
+
+        StartCoroutine(testConnection(endGameplay, endData));
+    }
+
+    public void endGameplay(bool internetAccess, JSONNode endData)
+    {
+        if (internetAccess)
+        {
+            string win = endData["win"];
+            StartCoroutine(endGameplayOnline(win));
+        }
+        else
+        {
+            logs.endGameplay(endData["win"], idGameplay);
+        }
+    }
+
+    public IEnumerator endGameplayOnline(String win)
+    {
+        Debug.Log("--- end Gameplay ---");
+        string URL = baseURL + "/gameplay/" + idGameplay + "/end/" + win;
+        Debug.Log(URL);
+
+        Dictionary<string, string> headers2 = new Dictionary<string, string>();
+        headers2.Add("Content-Type", "text/plain");
+
+        WWW www = new WWW(URL, Encoding.UTF8.GetBytes(win), headers2);
+
+        // wait for the requst to finish
+        yield return www;
+
+        if (www.error != null && !www.error.Equals(""))
+        {
+            Debug.Log("Error: " + www.error);
+        }
+        else
+        {
+            Debug.Log("Gameplay Ended! return: " + www.text);
+        }
+    }
     #endregion
 
     #region get stuff from engage (error, idplayer, username, version...)
