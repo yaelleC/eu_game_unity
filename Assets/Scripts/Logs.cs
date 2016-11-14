@@ -73,7 +73,7 @@ public class Logs
         }
         foreach (Feedback f in gp.feedback)
         {
-            if (f.feedback.Equals(feedbackName))
+            if (f.name.Equals(feedbackName))
             {
                 return true;
             }

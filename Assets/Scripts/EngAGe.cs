@@ -22,6 +22,7 @@ public class EngAGe : MonoBehaviour
     private static Logs logs = new Logs();
     // the url of the logs file
     private static string jsonLogsURL = "engageLogs.gd";
+    private static string jsonLogsURL2 = "engageLogs2.gd";
     // file with serialised logs
     private static string path;
 
@@ -67,7 +68,7 @@ public class EngAGe : MonoBehaviour
         path = Path.Combine(Application.persistentDataPath, jsonLogsURL);
 
         // uncomment to clean log file
-         SaveLogs();
+        // SaveLogs();
 
         // load log info (if any)
         LoadPlayerInfo();
@@ -91,12 +92,25 @@ public class EngAGe : MonoBehaviour
     {
         if (File.Exists(path))
         {
+           
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(path, FileMode.Open);
-            logs = (Logs)bf.Deserialize(file);
-            file.Close();
-        }
+            try {
+                logs = (Logs)bf.Deserialize(file);
+                file.Close();
+            }
+            catch
+            {
+                file.Close();
+                // if error reading the file, copy it to a backupFile
+                string path2 = Path.Combine(Application.persistentDataPath, jsonLogsURL2);
+                File.Copy(path, path2);
 
+                // start fresh with empty logs
+                logs = new Logs();
+            }
+        }
+        
         Debug.Log("loading logs from "+path+" : " + logs.SaveToPrettyString());
     }
     // loads config file + save in JSON variable
@@ -558,7 +572,10 @@ public class EngAGe : MonoBehaviour
             StartCoroutine(startGameplayOnline(startGPData["idSG"].AsInt, startGPData["sceneGame"]));
         }
         else
-        {            
+        {
+            scores = new JSONArray();
+            feedback = new JSONArray();
+
             // create a new offline gameplay
             Gameplay gp = new Gameplay();
             // set its id (convention = for an offline gameplay id its negative position in the gameplays array)
@@ -647,8 +664,7 @@ public class EngAGe : MonoBehaviour
     private JSONArray learningOutcomesToArray(JSONClass scores)
     {
         JSONArray scoresArray = new JSONArray();
-        // TODO turn JSON into Array
-
+        
         foreach (string key in scores.GetKeys())
         {
             // create a json object with all the score info
@@ -771,10 +787,6 @@ public class EngAGe : MonoBehaviour
                                 JSONClass feedbackMessage = getFeedbackMessage(f["name"]);
                                 feedbackMessage["name"] = f["name"];
                                 returnAssess["feedback"].Add(feedbackMessage);
-
-                                // log feedback;
-                                Feedback feedbackLogged = new Feedback(feedbackMessage["name"], feedbackMessage["message"]);
-                                logs.logFeedback(feedbackLogged, idGameplay);
                             }
                         }
                         
@@ -797,10 +809,6 @@ public class EngAGe : MonoBehaviour
                         JSONClass feedbackMessage = getFeedbackMessage(f["name"]);
                         feedbackMessage["name"] = f["name"];
                         returnAssess["feedback"].Add(feedbackMessage);
-
-                        // log feedback;
-                        Feedback feedbackLogged = new Feedback(feedbackMessage["name"], feedbackMessage["message"]);
-                        logs.logFeedback(feedbackLogged, idGameplay);
                     }
                 }
 
@@ -811,14 +819,18 @@ public class EngAGe : MonoBehaviour
                 Debug.Log("no match was found in the database for the values received");
             }
 
-            feedback = returnAssess["feedback"].AsArray;
             // update feedback with inactivity and outcome feedback
-            getFeedbackOffline();
+            JSONArray feedbackInactivityOrScore = getFeedbackOffline();
 
-            returnAssess["feedback"] = feedback;
-            returnAssess["scores"] = scores;
+            foreach (JSONNode fdbk in feedbackInactivityOrScore)
+            {
+                returnAssess["feedback"].Add(fdbk);
+            }
 
-            // any badge recieved  
+            // for each feedback to trigger check if 1) it's a badge and 2) there is a "[value]" that needs replacing
+            // then log feeback
+            feedback = new JSONArray();
+
             foreach (JSONNode f in returnAssess["feedback"].AsArray)
             {
                 string type = f["type"];
@@ -827,16 +839,28 @@ public class EngAGe : MonoBehaviour
                 {
                     badgesWon.Add(f);
                 }
+                string msg = f["message"];
                 // TODO: replace param name
+                foreach (string value in values.AsObject.GetKeys())
+                {
+                    msg = msg.Replace("[" + value + "]", values[value]);
+                }
 
+                // log feedback;
+                Feedback feedbackLogged = new Feedback(f["name"], msg, f["final"], f["type"]);
+                logs.logFeedback(feedbackLogged, idGameplay);
+
+                feedback.Add(JSON.Parse(JsonUtility.ToJson(feedbackLogged)));
             }
 
-            Debug.Log("scores: " + scores.ToString());
 
+            returnAssess["scores"] = scores;
+            returnAssess["feedback"] = feedback;
+            
             logs.updateScores(scores.ToString(), idGameplay);
 
             SaveLogs();
-
+            
             callback(returnAssess);
         }
     }
@@ -874,13 +898,17 @@ public class EngAGe : MonoBehaviour
 
     private JSONClass getFeedbackMessage(string name)
     {
+        JSONClass feedback = new JSONClass();
+             
         if (seriousGame.AsObject == null)
         {
             Debug.Log("SG null");
             seriousGame = (logs.configFile != null && JSON.Parse(logs.configFile)["seriousGame"] != null) ? JSON.Parse(logs.configFile) : engageConfig_v0;
         }
 
-        return seriousGame["feedback"][name].AsObject;
+        feedback = seriousGame["feedback"][name].AsObject;
+
+        return feedback;
     }
     
     private void updateScore(string score, float mark, bool reset)
@@ -1003,14 +1031,24 @@ public class EngAGe : MonoBehaviour
         }
         else
         {
-            getFeedbackOffline();
+            feedback = getFeedbackOffline();
+
+            foreach (JSONNode feedbackToTrigger in feedback)
+            {
+                // log feedback;
+                Feedback feedbackLogged = new Feedback(feedbackToTrigger["name"], feedbackToTrigger["message"], feedbackToTrigger["final"], feedbackToTrigger["type"]);
+                logs.logFeedback(feedbackLogged, idGameplay);
+            }
+
+            SaveLogs();
 
             callbackArray(feedback);
         }
     }
 
-    public void getFeedbackOffline()
+    public JSONArray getFeedbackOffline()
     {
+        JSONArray feedbackListToTrigger = new JSONArray();
         // get the evidence model of the config file (containing assessment logic)
         if (seriousGame.AsObject == null)
         {
@@ -1021,7 +1059,7 @@ public class EngAGe : MonoBehaviour
         foreach (JSONNode f in seriousGame["inactivityFeedback"].AsArray)
         {
             DateTime now = new DateTime();
-            Double difference = (now - logs.getGameplayByID(idGameplay).lastActionTime).TotalSeconds;
+            Double difference = (now - logs.getGameplayByID(idGameplay).getTimeLastAction()).TotalSeconds;
 
             string sign = f["sign"];
             if ((sign.Equals(">") && difference > f["limit"].AsInt)
@@ -1031,18 +1069,14 @@ public class EngAGe : MonoBehaviour
                 {                    
                     if (!logs.feedbackHasBeenTriggered(inactivityFeedback, idGameplay))
                     {
-                        JSONNode feedbackToTrigger = seriousGame["feedback"][inactivityFeedback];
-                        feedbackToTrigger.Add("id", "-1");
-                        feedbackToTrigger.Add("name", inactivityFeedback);
+                        JSONNode toTrigger = seriousGame["feedback"][inactivityFeedback];
+                        Feedback feedbackToTrigger = new Feedback(inactivityFeedback, toTrigger["message"], toTrigger["final"], toTrigger["type"]);
+                        feedbackToTrigger.message = feedbackToTrigger.message.Replace("[inactivity]", difference.ToString());
 
-                        feedback.Add(feedbackToTrigger);
-                        // log feedback;
-                        Feedback feedbackLogged = new Feedback(feedbackToTrigger["name"], feedbackToTrigger["message"]);
-                        logs.logFeedback(feedbackLogged, idGameplay);
+                        feedbackListToTrigger.Add(JSON.Parse(JsonUtility.ToJson(feedbackToTrigger)));
                     }
                 }
             }
-            SaveLogs();
         }
 
         // goal related feedback
@@ -1064,21 +1098,18 @@ public class EngAGe : MonoBehaviour
 
                         if (!logs.feedbackHasBeenTriggered(name, idGameplay) || repeat)
                         {
-                            JSONNode feedbackToTrigger = seriousGame["feedback"][scoreFeedback["name"]];
-                            feedbackToTrigger.Add("id", "-1");
-                            feedbackToTrigger.Add("name", scoreFeedback["name"]);
+                            JSONNode toTrigger = seriousGame["feedback"][scoreFeedback["name"]];
+                            Feedback feedbackToTrigger = new Feedback(scoreFeedback["name"], toTrigger["message"], toTrigger["final"], toTrigger["type"]);
+                            feedbackToTrigger.message = feedbackToTrigger.message.Replace("[" + score["name"] + "]", score["value"]);
 
-                            feedback.Add(feedbackToTrigger);
-
-                            // log feedback;
-                            Feedback feedbackLogged = new Feedback(feedbackToTrigger["name"], feedbackToTrigger["message"]);
-                            logs.logFeedback(feedbackLogged, idGameplay);
+                            feedbackListToTrigger.Add(JSON.Parse(JsonUtility.ToJson(feedbackToTrigger)));
                         }
                     }
                 }
 
             }
         }
+        return feedbackListToTrigger;
     }
 
     public IEnumerator getFeedbackOnline(Action<JSONArray> callbackFeedback)

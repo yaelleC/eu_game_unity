@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 [Serializable]
 public class Gameplay
 {
-
-    private const string DateTimeOffsetFormatString = "yyyy-MM-ddTHH:mm:sszzz";
+    private const string DateTimeOffsetFormatString = "yyyy-MM-dd HH:mm:ss";
 
     // id of the GP 
     // from engage server if internet was available,
@@ -23,13 +23,10 @@ public class Gameplay
 
     // log of all feedback triggered in the game
     public List<Feedback> feedback;
-
-    public DateTime timestarted;
-    public DateTime lastActionTime;
-    public DateTime timeEnded;
-    public string timestarted_string;
-    public string lastActionTime_string;
-    public string timeEnded_string;
+    
+    public string timeStarted;
+    public string lastAction;
+    public string timeEnded;
 
     // 'win', 'lose' or 'end'
     public string gpWon;
@@ -40,30 +37,32 @@ public class Gameplay
         player = new Player();
         actions = new List<Action>();
         feedback = new List<Feedback>();
-        timestarted = DateTime.Now;
-        timestarted_string = timestarted.ToString(DateTimeOffsetFormatString);
-        lastActionTime = DateTime.Now;
-        lastActionTime_string = lastActionTime.ToString(DateTimeOffsetFormatString);
+        DateTime now = DateTime.Now;
+        timeStarted = now.ToString(DateTimeOffsetFormatString);
+        lastAction = now.ToString(DateTimeOffsetFormatString);
     }
 
     public void Start()
     {
-        timestarted = DateTime.Now;
-        timestarted_string = timestarted.ToString(DateTimeOffsetFormatString);
+        timeStarted = DateTime.Now.ToString(DateTimeOffsetFormatString);
     }
     public void Update()
     {
-        lastActionTime = DateTime.Now;
-        lastActionTime_string = timestarted.ToString(DateTimeOffsetFormatString);
+        lastAction = DateTime.Now.ToString(DateTimeOffsetFormatString);
     }
 
     public void End(string endingState)
     {
         gpWon = endingState;
-        timeEnded = DateTime.Now;
-        timeEnded_string = timeEnded.ToString(DateTimeOffsetFormatString);
+        timeEnded = DateTime.Now.ToString(DateTimeOffsetFormatString);
     }
 
+    public DateTime getTimeLastAction()
+    {
+        DateTime dt = DateTime.ParseExact(lastAction, DateTimeOffsetFormatString, CultureInfo.InvariantCulture);
+
+        return dt;
+    }
     
 }
 

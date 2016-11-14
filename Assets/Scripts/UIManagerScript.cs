@@ -291,7 +291,6 @@ public class UIManagerScript : MonoBehaviour {
 
 	public void UpdateFeedback(JSONArray feedbackReceived) 
 	{
-        print(feedbackReceived.ToString());
 		foreach (JSONNode f in feedbackReceived)
 		{
 			// set color to write line into
