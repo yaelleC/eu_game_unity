@@ -68,7 +68,7 @@ public class EngAGe : MonoBehaviour
         path = Path.Combine(Application.persistentDataPath, jsonLogsURL);
 
         // uncomment to clean log file
-        // SaveLogs();
+        //SaveLogs();
 
         // load log info (if any)
         LoadPlayerInfo();
@@ -104,7 +104,7 @@ public class EngAGe : MonoBehaviour
                 file.Close();
                 // if error reading the file, copy it to a backupFile
                 string path2 = Path.Combine(Application.persistentDataPath, jsonLogsURL2);
-                File.Copy(path, path2);
+                File.Copy(path, path2, true);
 
                 // start fresh with empty logs
                 logs = new Logs();
